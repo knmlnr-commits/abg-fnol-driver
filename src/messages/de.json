@@ -1,0 +1,335 @@
+{
+  "app": {
+    "title": "Schaden melden",
+    "partner": "Vermietpartner",
+    "language": "Sprache",
+    "prototype": "Prototyp mit Testdaten"
+  },
+  "common": {
+    "next": "Weiter",
+    "back": "Zurück",
+    "yes": "Ja",
+    "no": "Nein",
+    "optional": "Optional",
+    "required": "Pflicht",
+    "recommended": "Empfohlen",
+    "loading": "Wird geladen…",
+    "saving": "Wird gespeichert…",
+    "saved": "Gespeichert",
+    "offline": "Keine Verbindung. Lassen Sie diese Seite offen, wir senden Ihre Antworten, sobald Sie wieder online sind.",
+    "retry": "Nochmal versuchen",
+    "step": "Schritt {current} von {total}",
+    "now": "Jetzt",
+    "change": "Ändern",
+    "remove": "Entfernen",
+    "close": "Schließen"
+  },
+  "errors": {
+    "invalid_link": "Dieser Link funktioniert nicht mehr. Bitte fragen Sie die Station nach einem neuen.",
+    "request_closed": "Diese Anfrage ist abgeschlossen. Danke, es wird nichts mehr benötigt.",
+    "rate_limited": "Zu viele Versuche in kurzer Zeit. Bitte warten Sie eine Minute.",
+    "consent_missing": "Bitte bestätigen Sie den Datenschutzhinweis, um fortzufahren.",
+    "bot_detected": "Wir konnten Ihren Browser nicht prüfen. Bitte versuchen Sie es erneut.",
+    "invalid_input": "Etwas in Ihrer Antwort stimmt nicht. Bitte prüfen Sie es.",
+    "too_large": "Die Datei ist zu groß. Höchstens 15 MB.",
+    "invalid_type": "Bitte ein Foto (JPG, PNG, WebP) oder ein PDF verwenden.",
+    "already_submitted": "Diese Meldung wurde bereits gesendet.",
+    "server_error": "Bei uns ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "network": "Keine Verbindung. Wir versuchen es automatisch erneut."
+  },
+  "start": {
+    "title": "Schaden am Mietwagen melden",
+    "intro": "Das dauert etwa vier Minuten. Was wir schon wissen, ist bereits ausgefüllt.",
+    "known": "Was wir wissen",
+    "station": "Station",
+    "vehicle": "Fahrzeug",
+    "agreement": "Mietvertrag",
+    "privacy_title": "Ihr Datenschutz",
+    "privacy_text": "Wir nutzen Ihre Antworten, Fotos und Ihren Standort nur für die Bearbeitung dieses Schadens. Der Vermietpartner und sein Schadenbearbeiter erhalten sie. Wir speichern sie {days} Tage nach dem Senden, außer der Schaden erfordert länger.",
+    "privacy_more": "Vollständigen Datenschutzhinweis lesen",
+    "consent_privacy": "Ich habe den Datenschutzhinweis gelesen",
+    "consent_location": "Meinen Standort für den Unfallort und die Fotos verwenden",
+    "start": "Starten",
+    "resume_hint": "Sie können jederzeit aufhören. Öffnen Sie denselben Link, um weiterzumachen.",
+    "safety_first": "Ist jemand verletzt? Rufen Sie zuerst {number} an."
+  },
+  "privacy": {
+    "title": "Datenschutzhinweis",
+    "body": "[CONFIRM] Platzhaltertext für den Prototyp. Der endgültige Hinweis nennt den Verantwortlichen, die Zwecke, die Rechtsgrundlage, die Empfänger, die Speicherdauer und Ihre Rechte. Dieser Prototyp enthält nur Testdaten."
+  },
+  "steps": {
+    "injured": {
+      "title": "Ist jemand verletzt?",
+      "call": "{number} anrufen",
+      "call_hint": "Zuerst Hilfe holen. Sie können die Meldung später mit demselben Link beenden."
+    },
+    "police": {
+      "title": "War die Polizei vor Ort?"
+    },
+    "police_reference": {
+      "title": "Aktenzeichen der Polizei",
+      "help": "Es steht auf dem Zettel der Polizei. Überspringen Sie es, wenn Sie keins haben.",
+      "label": "Aktenzeichen"
+    },
+    "vehicle": {
+      "title": "Ist das Ihr Mietwagen?",
+      "plate": "Kennzeichen",
+      "agreement": "Mietvertragsnummer",
+      "agreement_help": "Auf Ihrem Mietvertrag oder in der Bestätigungs-E-Mail.",
+      "confirm": "Ja, das stimmt"
+    },
+    "contact": {
+      "title": "Wie erreichen wir Sie?",
+      "help": "Nur für Fragen zu diesem Schaden. Eins von beiden reicht.",
+      "email": "E-Mail",
+      "phone": "Handynummer",
+      "need_one": "Bitte geben Sie eine E-Mail-Adresse oder Handynummer an."
+    },
+    "incident_type": {
+      "title": "Was ist passiert?",
+      "collision": "Zusammenstoß mit einem anderen Beteiligten",
+      "collision_hint": "Ein anderes Auto, Fahrrad oder eine Person",
+      "single_vehicle": "Schaden ohne anderen Beteiligten",
+      "single_vehicle_hint": "Zum Beispiel ein Pfosten, ein Bordstein oder ein Tier",
+      "parked_unknown": "Schaden entdeckt, Ursache unbekannt",
+      "parked_unknown_hint": "Das Auto war geparkt oder Sie wissen nicht wie",
+      "theft_breakin": "Diebstahl oder Aufbruch",
+      "theft_breakin_hint": "Das Auto oder Sachen darin",
+      "glass": "Glasschaden",
+      "glass_hint": "Windschutzscheibe oder Fenster",
+      "other": "Etwas anderes",
+      "other_hint": "Nichts davon"
+    },
+    "when_where": {
+      "title": "Wann und wo ist es passiert?",
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "locate": "Meinen Standort verwenden",
+      "locating": "Standort wird gesucht…",
+      "located": "Pin aus Ihrem Standort gesetzt. Ziehen Sie ihn bei Bedarf an die genaue Stelle.",
+      "denied": "Kein Standort. Tippen Sie auf die Karte, um den Pin zu setzen.",
+      "manual": "Pin von Ihnen verschoben",
+      "accuracy": "Genau auf etwa {meters} m",
+      "map_label": "Karte, tippen oder Pin ziehen, um den Ort zu setzen"
+    },
+    "collision_kind": {
+      "title": "Welche Art von Zusammenstoß?",
+      "rear_end": "Auffahrunfall",
+      "side": "Seitlicher Aufprall",
+      "manoeuvring": "Beim Parken oder Rangieren",
+      "head_on": "Frontal",
+      "other": "Etwas anderes"
+    },
+    "other_party": {
+      "title": "Das andere Fahrzeug",
+      "help": "Übernehmen Sie es aus deren Papieren oder dem Unfallbericht.",
+      "plate": "Kennzeichen",
+      "country": "Land des Kennzeichens",
+      "insurer": "Deren Versicherung",
+      "name": "Name des Fahrers",
+      "phone": "Telefon des Fahrers",
+      "email": "E-Mail des Fahrers",
+      "choose": "Auswählen"
+    },
+    "irf": {
+      "title": "Haben Sie den Unfallbericht ausgefüllt?",
+      "help": "Er liegt im Handschuhfach. Beide Fahrer füllen ihn aus und unterschreiben.",
+      "completed": "Ja, ausgefüllt und unterschrieben",
+      "not_completed": "Nein, noch nicht",
+      "no_form": "Es war kein Formular im Auto"
+    },
+    "hit_object": {
+      "title": "Womit sind Sie zusammengestoßen?",
+      "object": "Einem Gegenstand, wie Pfosten oder Mauer",
+      "kerb": "Einem Bordstein",
+      "animal": "Einem Tier",
+      "pothole": "Einem Schlagloch",
+      "other": "Etwas anderem"
+    },
+    "found_at": {
+      "title": "Wann haben Sie den Schaden entdeckt?",
+      "help": "Ungefähr reicht."
+    },
+    "theft_kind": {
+      "title": "Was wurde gestohlen?",
+      "whole_vehicle": "Das ganze Auto",
+      "break_in": "Aufbruch, Sachen aus dem Auto",
+      "parts": "Teile des Autos, wie Räder oder Spiegel"
+    },
+    "theft_items": {
+      "title": "Was wurde mitgenommen?",
+      "help": "Eine kurze Liste reicht.",
+      "label": "Gestohlene Sachen"
+    },
+    "keys": {
+      "title": "Haben Sie die Autoschlüssel noch?",
+      "help": "Die Versicherung wird danach fragen."
+    },
+    "glass_part": {
+      "title": "Welches Glas ist beschädigt?",
+      "windscreen": "Windschutzscheibe",
+      "side_window": "Seitenfenster",
+      "rear_window": "Heckscheibe",
+      "sunroof": "Schiebedach"
+    },
+    "glass_damage": {
+      "title": "Wie sieht es aus?",
+      "chip": "Ein kleiner Steinschlag",
+      "crack": "Ein Riss"
+    },
+    "drivable": {
+      "title": "Können Sie noch sicher fahren?",
+      "help": "Wenn nicht, organisiert die Station ein anderes Auto."
+    },
+    "description": {
+      "title": "Erzählen Sie es mit Ihren Worten",
+      "help": "Ein paar Sätze reichen. Zum Beispiel: Beim Rückwärtsfahren ein geparktes Auto berührt.",
+      "label": "Was ist passiert"
+    },
+    "damage": {
+      "title": "Wo ist das Auto beschädigt?",
+      "help": "Tippen Sie jedes beschädigte Teil an. Nochmal tippen hebt es auf.",
+      "selected": "{count, plural, =0 {Nichts ausgewählt} one {# Teil ausgewählt} other {# Teile ausgewählt}}",
+      "front": "Vorne",
+      "zones": {
+        "front_bumper": "Stoßstange vorne",
+        "bonnet": "Motorhaube",
+        "windscreen": "Windschutzscheibe",
+        "roof": "Dach",
+        "rear_window": "Heckscheibe",
+        "boot": "Kofferraum",
+        "rear_bumper": "Stoßstange hinten",
+        "left_front": "Links vorne",
+        "left_rear": "Links hinten",
+        "right_front": "Rechts vorne",
+        "right_rear": "Rechts hinten",
+        "wheels": "Räder oder Reifen"
+      }
+    },
+    "photos": {
+      "title": "Fotos",
+      "help": "Folgen Sie der Vorlage. Gutes Licht und das ganze Teil im Bild.",
+      "progress": "{done} von {total} Pflichtfotos",
+      "take": "Foto aufnehmen",
+      "file": "Datei wählen",
+      "another": "Weiteres hinzufügen",
+      "uploading": "Wird hochgeladen…",
+      "uploaded": "Hochgeladen",
+      "queued": "Wartet auf Verbindung",
+      "failed": "Hochladen fehlgeschlagen",
+      "location_note": "Zeit und Ort werden mit jedem Foto gespeichert.",
+      "slots": {
+        "scene_overview": { "title": "Überblick über die Unfallstelle", "hint": "Treten Sie zurück. Beide Autos und die Straße in einem Bild." },
+        "own_plate": { "title": "Kennzeichen Ihres Autos", "hint": "Gerade von vorne, das Kennzeichen lesbar." },
+        "own_damage": { "title": "Schaden an Ihrem Auto", "hint": "Nah, das ganze beschädigte Teil im Bild." },
+        "corner_front_left": { "title": "Ihr Auto, vorne links", "hint": "Aus etwa drei Schritten Abstand." },
+        "corner_front_right": { "title": "Ihr Auto, vorne rechts", "hint": "Aus etwa drei Schritten Abstand." },
+        "corner_rear_left": { "title": "Ihr Auto, hinten links", "hint": "Aus etwa drei Schritten Abstand." },
+        "corner_rear_right": { "title": "Ihr Auto, hinten rechts", "hint": "Aus etwa drei Schritten Abstand." },
+        "other_damage": { "title": "Schaden am anderen Fahrzeug", "hint": "Das ganze beschädigte Teil im Bild." },
+        "other_plate": { "title": "Kennzeichen des anderen Fahrzeugs", "hint": "Gerade von vorne, das Kennzeichen lesbar." },
+        "irf_front": { "title": "Unfallbericht, Vorderseite", "hint": "Flach, alle vier Ecken sichtbar, unterschrieben." },
+        "irf_back": { "title": "Unfallbericht, Rückseite", "hint": "Flach, alle vier Ecken sichtbar." },
+        "police_report": { "title": "Polizeibericht", "hint": "Foto oder PDF. Sie können ihn später nachreichen." },
+        "glass_closeup": { "title": "Glasschaden aus der Nähe", "hint": "Halten Sie eine Münze daneben als Größenvergleich." },
+        "other_document": { "title": "Weitere Dokumente", "hint": "Alles, was sonst noch hilft." }
+      }
+    },
+    "witnesses": {
+      "title": "Gab es Zeugen?",
+      "help": "Nur Personen eintragen, die einverstanden sind, kontaktiert zu werden.",
+      "add": "Zeugen hinzufügen",
+      "none": "Keine Zeugen",
+      "name": "Name",
+      "phone": "Telefon",
+      "email": "E-Mail",
+      "consent": "Diese Person ist mit einer Kontaktaufnahme einverstanden",
+      "number": "Zeuge {n}"
+    },
+    "review": {
+      "title": "Vor dem Senden prüfen",
+      "score": "Ihre Meldung ist zu {score}% vollständig",
+      "missing_title": "Es fehlt noch",
+      "fix": "Jetzt ergänzen",
+      "all_good": "Alles ist da. Vielen Dank.",
+      "submit": "Meldung senden",
+      "submit_anyway": "Mit Lücken senden",
+      "gaps_note": "Sie können jetzt senden und den Rest später mit Ihrem persönlichen Link ergänzen.",
+      "summary": "Ihre Antworten"
+    }
+  },
+  "missing": {
+    "injured": { "label": "Verletzungen", "why": "Verletzungen ändern, wie schnell wir handeln." },
+    "police": { "label": "Polizei ja oder nein", "why": "Zeigt uns, ob es einen Polizeibericht gibt." },
+    "police_reference": { "label": "Aktenzeichen der Polizei", "why": "Wir brauchen es, um den Polizeibericht anzufordern." },
+    "vehicle_plate": { "label": "Ihr Kennzeichen", "why": "Wir brauchen es, um das Auto zu finden." },
+    "rental_agreement": { "label": "Mietvertragsnummer", "why": "Verknüpft den Schaden mit Ihrer Miete, so brauchen wir keine weiteren persönlichen Daten." },
+    "contact": { "label": "E-Mail oder Handynummer", "why": "Ohne sie können wir Ihnen keine Frage stellen." },
+    "incident_type": { "label": "Was passiert ist", "why": "Bestimmt die folgenden Fragen." },
+    "occurred_at": { "label": "Datum und Uhrzeit", "why": "Nötig für den Versicherungsschutz." },
+    "location": { "label": "Ort", "why": "Nötig, um die Haftung zu klären." },
+    "description": { "label": "Ihre Beschreibung", "why": "Ihre eigenen Worte helfen dem Bearbeiter am meisten." },
+    "damage_zones": { "label": "Beschädigte Teile", "why": "Die Station kann die Reparatur planen." },
+    "collision_kind": { "label": "Art des Zusammenstoßes", "why": "Erster Hinweis, wer haftet." },
+    "other_plate": { "label": "Kennzeichen des anderen Fahrzeugs", "why": "Ohne das können wir uns den Schaden nicht von der Gegenseite holen." },
+    "other_insurer": { "label": "Versicherung der Gegenseite", "why": "Beschleunigt die Regulierung mit der Gegenseite." },
+    "other_contact": { "label": "Kontakt des anderen Fahrers", "why": "Nötig, wenn die Gegenseite widerspricht." },
+    "irf_status": { "label": "Unfallbericht", "why": "Ein unterschriebener Bericht erspart lange Diskussionen." },
+    "hit_object": { "label": "Womit Sie zusammengestoßen sind", "why": "Entscheidet, ob jemand anderes zahlt." },
+    "found_at": { "label": "Wann Sie es entdeckt haben", "why": "Grenzt ein, wann es passiert ist." },
+    "theft_kind": { "label": "Was gestohlen wurde", "why": "Bestimmt die nächsten Schritte." },
+    "keys_present": { "label": "Autoschlüssel", "why": "Die Versicherung fragt nach einem Diebstahl danach." },
+    "items_taken": { "label": "Gestohlene Sachen", "why": "Nötig für die Polizei und die Regulierung." },
+    "glass_part": { "label": "Welches Glas", "why": "Entscheidet Reparatur oder Austausch." },
+    "glass_damage": { "label": "Steinschlag oder Riss", "why": "Entscheidet Reparatur oder Austausch." },
+    "drivable": { "label": "Fahrbereit", "why": "Zeigt der Station, ob Sie ein anderes Auto brauchen." },
+    "photo_scene_overview": { "label": "Foto der Unfallstelle", "why": "Zeigt die Situation, wie sie war." },
+    "photo_own_plate": { "label": "Foto Ihres Kennzeichens", "why": "Belegt, um welches Auto es geht." },
+    "photo_own_damage": { "label": "Foto des Schadens", "why": "Nötig, um die Reparatur zu schätzen." },
+    "photo_corner_front_left": { "label": "Foto vorne links", "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen." },
+    "photo_corner_front_right": { "label": "Foto vorne rechts", "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen." },
+    "photo_corner_rear_left": { "label": "Foto hinten links", "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen." },
+    "photo_corner_rear_right": { "label": "Foto hinten rechts", "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen." },
+    "photo_other_damage": { "label": "Foto des anderen Fahrzeugs", "why": "Gleicht den Schaden an beiden Autos ab." },
+    "photo_other_plate": { "label": "Foto des anderen Kennzeichens", "why": "Belegt, wer die Gegenseite ist." },
+    "photo_irf_front": { "label": "Unfallbericht, Vorderseite", "why": "Der unterschriebene Bericht ist der stärkste Beleg." },
+    "photo_irf_back": { "label": "Unfallbericht, Rückseite", "why": "Skizze und Bemerkungen stehen auf der Rückseite." },
+    "photo_police_report": { "label": "Polizeibericht", "why": "Die Versicherung verlangt ihn nach Polizeieinsatz oder Diebstahl." },
+    "photo_glass_closeup": { "label": "Nahaufnahme des Glases", "why": "Entscheidet Reparatur oder Austausch." }
+  },
+  "done": {
+    "title": "Danke. Ihre Meldung ist eingegangen.",
+    "reference": "Ihre Referenz",
+    "next_title": "So geht es weiter",
+    "next_1": "Die Station und das Schadenteam erhalten Ihre Meldung jetzt.",
+    "next_2": "Wir melden uns nur, wenn etwas unklar ist.",
+    "next_3": "Fehlt etwas? Ergänzen Sie es innerhalb von 30 Tagen mit Ihrem persönlichen Link.",
+    "gaps": "{count, plural, one {Ein Punkt fehlt noch.} other {# Punkte fehlen noch.}} Sie können sie jetzt oder später ergänzen.",
+    "link_title": "Ihr persönlicher Link",
+    "link_help": "Bewahren Sie diesen Link auf. Damit können Sie Dokumente nachreichen.",
+    "copy": "Link kopieren",
+    "copied": "Kopiert",
+    "add_docs": "Dokumente nachreichen",
+    "summary": "Was Sie gesendet haben",
+    "photos": "{count, plural, one {# Foto} other {# Fotos}}"
+  },
+  "docreq": {
+    "title": "Bitte reichen Sie diese Dokumente nach",
+    "intro": "Für Meldung {reference}. Foto aufnehmen oder Datei wählen.",
+    "message": "Nachricht vom Schadenteam",
+    "done": "Danke. Wir haben alles erhalten, worum wir gebeten hatten.",
+    "added_title": "Dokumente zu Meldung {reference} nachreichen"
+  },
+  "home": {
+    "title": "Schaden am Mietwagen melden",
+    "body": "Scannen Sie den QR-Code im Auto, auf Ihrem Mietvertrag oder an der Station, um zu starten.",
+    "demo": "Demo öffnen"
+  },
+  "demo": {
+    "title": "Demo QR-Codes",
+    "intro": "Erfundene Stationen und Fahrzeuge. Mit dem Handy scannen oder auf Öffnen tippen.",
+    "open": "Öffnen",
+    "kinds": { "station": "Stationskarte", "vehicle": "Fahrzeugaufkleber", "agreement": "Mietvertrag" },
+    "disabled": "Die Demoseite ist ausgeschaltet."
+  }
+}

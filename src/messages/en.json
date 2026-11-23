@@ -1,0 +1,335 @@
+{
+  "app": {
+    "title": "Report damage",
+    "partner": "Rental partner",
+    "language": "Language",
+    "prototype": "Prototype with test data"
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "yes": "Yes",
+    "no": "No",
+    "optional": "Optional",
+    "required": "Required",
+    "recommended": "Recommended",
+    "loading": "Loading…",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "offline": "No connection. Keep this page open, we send your answers as soon as you are back online.",
+    "retry": "Try again",
+    "step": "Step {current} of {total}",
+    "now": "Now",
+    "change": "Change",
+    "remove": "Remove",
+    "close": "Close"
+  },
+  "errors": {
+    "invalid_link": "This link does not work any more. Please ask the rental station for a new one.",
+    "request_closed": "This request is closed. Thank you, nothing more is needed.",
+    "rate_limited": "Too many tries in a short time. Please wait a minute.",
+    "consent_missing": "Please accept the privacy notice to continue.",
+    "bot_detected": "We could not check your browser. Please try again.",
+    "invalid_input": "Something in your answer is not right. Please check it.",
+    "too_large": "This file is too large. The limit is 15 MB.",
+    "invalid_type": "Please use a photo (JPG, PNG, WebP) or a PDF.",
+    "already_submitted": "This report was already sent.",
+    "server_error": "Something went wrong on our side. Please try again.",
+    "network": "No connection. We try again automatically."
+  },
+  "start": {
+    "title": "Report damage to your rental car",
+    "intro": "It takes about four minutes. We already filled in what we know.",
+    "known": "What we know",
+    "station": "Station",
+    "vehicle": "Vehicle",
+    "agreement": "Rental agreement",
+    "privacy_title": "Your privacy",
+    "privacy_text": "We use your answers, photos and location only to handle this damage. The rental partner and its claims handler receive them. We keep them for {days} days after you send the report, unless the claim needs longer.",
+    "privacy_more": "Read the full privacy notice",
+    "consent_privacy": "I have read the privacy notice",
+    "consent_location": "Use my location for the place of the incident and the photos",
+    "start": "Start",
+    "resume_hint": "You can stop at any time. Open the same link to continue.",
+    "safety_first": "Is anyone hurt? Call {number} first."
+  },
+  "privacy": {
+    "title": "Privacy notice",
+    "body": "[CONFIRM] Placeholder text for the prototype. The final notice names the controller, the purposes, the legal basis, the recipients, the retention period and your rights. This prototype contains test data only."
+  },
+  "steps": {
+    "injured": {
+      "title": "Is anyone injured?",
+      "call": "Call {number}",
+      "call_hint": "Help first. You can finish this report later with the same link."
+    },
+    "police": {
+      "title": "Were the police involved?"
+    },
+    "police_reference": {
+      "title": "Police reference number",
+      "help": "It is on the paper the police gave you. Skip it if you do not have it.",
+      "label": "Reference number"
+    },
+    "vehicle": {
+      "title": "Is this your rental car?",
+      "plate": "License plate",
+      "agreement": "Rental agreement number",
+      "agreement_help": "On your rental agreement or in the confirmation email.",
+      "confirm": "Yes, this is correct"
+    },
+    "contact": {
+      "title": "How can we reach you?",
+      "help": "Only for questions about this damage. One of the two is enough.",
+      "email": "Email",
+      "phone": "Mobile number",
+      "need_one": "Please give an email address or a mobile number."
+    },
+    "incident_type": {
+      "title": "What happened?",
+      "collision": "Collision with another party",
+      "collision_hint": "Another car, bike or person",
+      "single_vehicle": "Damage without another party",
+      "single_vehicle_hint": "For example a post, a kerb or an animal",
+      "parked_unknown": "Found damage, cause unknown",
+      "parked_unknown_hint": "The car was parked or you do not know how",
+      "theft_breakin": "Theft or break-in",
+      "theft_breakin_hint": "The car or things in it",
+      "glass": "Glass damage",
+      "glass_hint": "Windscreen or windows",
+      "other": "Something else",
+      "other_hint": "None of the above"
+    },
+    "when_where": {
+      "title": "When and where did it happen?",
+      "date": "Date",
+      "time": "Time",
+      "locate": "Use my location",
+      "locating": "Finding your location…",
+      "located": "Pin set from your location. Drag it to the exact place if needed.",
+      "denied": "No location. Tap the map to set the pin.",
+      "manual": "Pin moved by you",
+      "accuracy": "Accurate to about {meters} m",
+      "map_label": "Map, tap or drag the pin to set the place"
+    },
+    "collision_kind": {
+      "title": "What kind of collision?",
+      "rear_end": "Rear end",
+      "side": "Side impact",
+      "manoeuvring": "While parking or manoeuvring",
+      "head_on": "Head on",
+      "other": "Something else"
+    },
+    "other_party": {
+      "title": "The other vehicle",
+      "help": "Copy it from their papers or from the incident report form.",
+      "plate": "License plate",
+      "country": "Country of the plate",
+      "insurer": "Their insurance company",
+      "name": "Driver's name",
+      "phone": "Driver's phone",
+      "email": "Driver's email",
+      "choose": "Choose"
+    },
+    "irf": {
+      "title": "Did you fill in the incident report form?",
+      "help": "It is in the glove box. Both drivers fill it in and sign it.",
+      "completed": "Yes, filled in and signed",
+      "not_completed": "No, not yet",
+      "no_form": "There was no form in the car"
+    },
+    "hit_object": {
+      "title": "What did you hit?",
+      "object": "An object, like a post or a wall",
+      "kerb": "A kerb",
+      "animal": "An animal",
+      "pothole": "A pothole",
+      "other": "Something else"
+    },
+    "found_at": {
+      "title": "When did you find the damage?",
+      "help": "Roughly is fine."
+    },
+    "theft_kind": {
+      "title": "What was stolen?",
+      "whole_vehicle": "The whole car",
+      "break_in": "Break-in, things taken from the car",
+      "parts": "Parts of the car, like wheels or mirrors"
+    },
+    "theft_items": {
+      "title": "What was taken?",
+      "help": "A short list is enough.",
+      "label": "Stolen items"
+    },
+    "keys": {
+      "title": "Do you still have the car keys?",
+      "help": "The insurer will ask for them."
+    },
+    "glass_part": {
+      "title": "Which glass is damaged?",
+      "windscreen": "Windscreen",
+      "side_window": "Side window",
+      "rear_window": "Rear window",
+      "sunroof": "Sunroof"
+    },
+    "glass_damage": {
+      "title": "What does it look like?",
+      "chip": "A small chip",
+      "crack": "A crack"
+    },
+    "drivable": {
+      "title": "Can you still drive the car safely?",
+      "help": "If not, the station arranges another car."
+    },
+    "description": {
+      "title": "Tell us in your own words",
+      "help": "A few sentences are enough. For example: I hit a parked car while reversing.",
+      "label": "What happened"
+    },
+    "damage": {
+      "title": "Where is the car damaged?",
+      "help": "Tap every part that is damaged. Tap again to undo.",
+      "selected": "{count, plural, =0 {Nothing selected} one {# part selected} other {# parts selected}}",
+      "front": "Front",
+      "zones": {
+        "front_bumper": "Front bumper",
+        "bonnet": "Bonnet",
+        "windscreen": "Windscreen",
+        "roof": "Roof",
+        "rear_window": "Rear window",
+        "boot": "Boot",
+        "rear_bumper": "Rear bumper",
+        "left_front": "Left front side",
+        "left_rear": "Left rear side",
+        "right_front": "Right front side",
+        "right_rear": "Right rear side",
+        "wheels": "Wheels or tyres"
+      }
+    },
+    "photos": {
+      "title": "Photos",
+      "help": "Follow the outline. Good light and the whole part in the picture.",
+      "progress": "{done} of {total} required photos",
+      "take": "Take photo",
+      "file": "Choose file",
+      "another": "Add another",
+      "uploading": "Uploading…",
+      "uploaded": "Uploaded",
+      "queued": "Waiting for connection",
+      "failed": "Upload failed",
+      "location_note": "Time and place are saved with each photo.",
+      "slots": {
+        "scene_overview": { "title": "Overview of the scene", "hint": "Step back. Both cars and the road in one picture." },
+        "own_plate": { "title": "License plate of your car", "hint": "Straight on, the plate readable." },
+        "own_damage": { "title": "Damage to your car", "hint": "Close, the whole damaged part in the frame." },
+        "corner_front_left": { "title": "Your car, front left corner", "hint": "From about three steps away." },
+        "corner_front_right": { "title": "Your car, front right corner", "hint": "From about three steps away." },
+        "corner_rear_left": { "title": "Your car, rear left corner", "hint": "From about three steps away." },
+        "corner_rear_right": { "title": "Your car, rear right corner", "hint": "From about three steps away." },
+        "other_damage": { "title": "Damage to the other vehicle", "hint": "The whole damaged part in the frame." },
+        "other_plate": { "title": "License plate of the other vehicle", "hint": "Straight on, the plate readable." },
+        "irf_front": { "title": "Incident report form, front", "hint": "Flat, all four corners visible, signed." },
+        "irf_back": { "title": "Incident report form, back", "hint": "Flat, all four corners visible." },
+        "police_report": { "title": "Police report", "hint": "Photo or PDF. You can add it later." },
+        "glass_closeup": { "title": "Glass damage close up", "hint": "Hold a coin next to it for size." },
+        "other_document": { "title": "Other documents", "hint": "Anything else that helps." }
+      }
+    },
+    "witnesses": {
+      "title": "Were there witnesses?",
+      "help": "Only add people who agree to be contacted.",
+      "add": "Add a witness",
+      "none": "No witnesses",
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "consent": "This person agrees to be contacted",
+      "number": "Witness {n}"
+    },
+    "review": {
+      "title": "Check before sending",
+      "score": "Your report is {score}% complete",
+      "missing_title": "Still missing",
+      "fix": "Add now",
+      "all_good": "Everything is there. Thank you.",
+      "submit": "Send report",
+      "submit_anyway": "Send with gaps",
+      "gaps_note": "You can send now and add the rest later with your personal link.",
+      "summary": "Your answers"
+    }
+  },
+  "missing": {
+    "injured": { "label": "Injuries", "why": "Injuries change how fast we act." },
+    "police": { "label": "Police yes or no", "why": "Tells us if a police report exists." },
+    "police_reference": { "label": "Police reference", "why": "We need it to get the police report." },
+    "vehicle_plate": { "label": "Your license plate", "why": "We need it to find the car." },
+    "rental_agreement": { "label": "Rental agreement number", "why": "Links the damage to your rental, so we do not need to ask for more personal details." },
+    "contact": { "label": "Email or mobile number", "why": "Without it we cannot ask you a question." },
+    "incident_type": { "label": "What happened", "why": "Decides which questions follow." },
+    "occurred_at": { "label": "Date and time", "why": "Needed for the insurance cover." },
+    "location": { "label": "Place", "why": "Needed to judge who is liable." },
+    "description": { "label": "Your description", "why": "Your own words help the handler most." },
+    "damage_zones": { "label": "Damaged parts", "why": "The station can plan the repair." },
+    "collision_kind": { "label": "Kind of collision", "why": "First indication of who is liable." },
+    "other_plate": { "label": "Other vehicle's plate", "why": "Without it we cannot claim from the other party." },
+    "other_insurer": { "label": "Other party's insurer", "why": "Speeds up the claim against the other party." },
+    "other_contact": { "label": "Other driver's contact", "why": "Needed if the other party disagrees." },
+    "irf_status": { "label": "Incident report form", "why": "A signed form avoids long discussions." },
+    "hit_object": { "label": "What you hit", "why": "Decides if someone else pays." },
+    "found_at": { "label": "When you found it", "why": "Narrows down when it happened." },
+    "theft_kind": { "label": "What was stolen", "why": "Decides the next steps." },
+    "keys_present": { "label": "Car keys", "why": "The insurer asks for them after a theft." },
+    "items_taken": { "label": "Stolen items", "why": "Needed for the police and the claim." },
+    "glass_part": { "label": "Which glass", "why": "Decides repair or replacement." },
+    "glass_damage": { "label": "Chip or crack", "why": "Decides repair or replacement." },
+    "drivable": { "label": "Safe to drive", "why": "Tells the station if you need another car." },
+    "photo_scene_overview": { "label": "Photo of the scene", "why": "Shows the situation as it was." },
+    "photo_own_plate": { "label": "Photo of your plate", "why": "Proves which car it is." },
+    "photo_own_damage": { "label": "Photo of the damage", "why": "Needed to estimate the repair." },
+    "photo_corner_front_left": { "label": "Photo front left", "why": "Shows earlier damage, so you are not charged for it." },
+    "photo_corner_front_right": { "label": "Photo front right", "why": "Shows earlier damage, so you are not charged for it." },
+    "photo_corner_rear_left": { "label": "Photo rear left", "why": "Shows earlier damage, so you are not charged for it." },
+    "photo_corner_rear_right": { "label": "Photo rear right", "why": "Shows earlier damage, so you are not charged for it." },
+    "photo_other_damage": { "label": "Photo of the other vehicle", "why": "Matches the damage on both cars." },
+    "photo_other_plate": { "label": "Photo of the other plate", "why": "Proves who the other party is." },
+    "photo_irf_front": { "label": "Report form, front", "why": "The signed form is the strongest proof." },
+    "photo_irf_back": { "label": "Report form, back", "why": "The sketch and remarks are on the back." },
+    "photo_police_report": { "label": "Police report", "why": "Required by the insurer after police involvement or theft." },
+    "photo_glass_closeup": { "label": "Close up of the glass", "why": "Decides repair or replacement." }
+  },
+  "done": {
+    "title": "Thank you. Your report is in.",
+    "reference": "Your reference",
+    "next_title": "What happens next",
+    "next_1": "The rental station and the claims team receive your report now.",
+    "next_2": "We contact you only if something is unclear.",
+    "next_3": "Missing something? Add it with your personal link within 30 days.",
+    "gaps": "{count, plural, one {One item is still missing.} other {# items are still missing.}} You can add them now or later.",
+    "link_title": "Your personal link",
+    "link_help": "Keep this link. It opens your report to add documents.",
+    "copy": "Copy link",
+    "copied": "Copied",
+    "add_docs": "Add documents",
+    "summary": "What you sent",
+    "photos": "{count, plural, one {# photo} other {# photos}}"
+  },
+  "docreq": {
+    "title": "Please add these documents",
+    "intro": "For report {reference}. Take a photo or choose a file.",
+    "message": "Message from the claims team",
+    "done": "Thank you. We received everything we asked for.",
+    "added_title": "Add documents to report {reference}"
+  },
+  "home": {
+    "title": "Report damage to a rental car",
+    "body": "Scan the QR code in the car, on your rental agreement or at the station to start.",
+    "demo": "Open the demo"
+  },
+  "demo": {
+    "title": "Demo QR codes",
+    "intro": "Fictional stations and vehicles. Scan with a phone or tap Open.",
+    "open": "Open",
+    "kinds": { "station": "Station card", "vehicle": "Vehicle sticker", "agreement": "Rental agreement" },
+    "disabled": "The demo page is switched off."
+  }
+}
