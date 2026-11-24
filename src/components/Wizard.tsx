@@ -15,7 +15,6 @@ import { CarOutline } from "./CarOutline";
 import { EvidenceCapture } from "./EvidenceCapture";
 import { Review } from "./Review";
 import { Done } from "./Done";
-import { ApplyTheme } from "./ApplyTheme";
 
 const MapPicker = dynamic(() => import("./MapPicker").then((m) => m.MapPicker), { ssr: false, loading: () => <div className="map" /> });
 
@@ -172,7 +171,7 @@ export function Wizard({ token }: { token: string }) {
   if (!data) return <main className="page"><p aria-busy="true">{t("common.loading")}</p></main>;
 
   if (data.status === "submitted") {
-    return <><ApplyTheme theme={data.theme} /><Done token={token} view={data} onChange={(ev, c) => setData({ ...data, evidence: ev, completeness: c ?? data.completeness })} /></>;
+    return <Done token={token} view={data} onChange={(ev, c) => setData({ ...data, evidence: ev, completeness: c ?? data.completeness })} />;
   }
 
   const yesNo = (field: (v: "yes" | "no") => Partial<Draft>, current?: "yes" | "no") => (
@@ -388,7 +387,6 @@ export function Wizard({ token }: { token: string }) {
 
   return (
     <main className="page">
-      <ApplyTheme theme={data.theme} />
       <div className="stepcount">{t("common.step", { current: index + 1, total: steps.length })}</div>
       <div className="progress" aria-hidden="true"><span style={{ width: `${((index + 1) / steps.length) * 100}%` }} /></div>
       {offline && <p className="notice" role="status">{t("common.offline")}</p>}

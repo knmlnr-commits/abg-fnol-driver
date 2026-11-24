@@ -46,7 +46,7 @@ export function Done({ token, view, onChange }: { token: string; view: IncidentV
           {copied ? t("done.copied") : t("done.copy")}
         </button>
       </section>
-      <section className="panel-rose" aria-labelledby="sum-h">
+      <section className="panel-surface" aria-labelledby="sum-h">
         <h2 id="sum-h">{t("done.summary")}</h2>
         <Summary draft={view.draft} view={view} />
       </section>

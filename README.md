@@ -37,6 +37,33 @@ is two photos.
 | Confirmation | Reference number (`FN-2026-000123`), summary, next steps, personal link to add documents later. |
 | Document request link | Same capture component, limited to the requested items (`/d/<token>`). The handler action that creates it comes in phase 2; the server function exists (`createDocumentRequest`). |
 
+## White label theming
+
+Every colour, font, logo and brand text comes from the tenant theme (`src/lib/theme`), applied as CSS
+variables by `TenantShell`. Components and `globals.css` carry no brand values.
+
+| Rule | Where |
+|---|---|
+| The tenant in the signed token decides the theme (QR code, personal link, document request link). Anything invalid falls back to the default. | `src/lib/theme/resolve.ts`, tested in `tests/unit/theme-resolve.test.ts` |
+| Default theme: Van Ameyde, Navy, Turquoise, Misty Rose, white, Georgia and Verdana. | `src/lib/theme/defaults.ts`, seed |
+| Demo tenant: Northline Rental, a fictional brand with an original wordmark (`supabase/northline-logo.svg`). | seed |
+| Every theme other than the default shows "Demo environment, fictional data". The footer always says "Powered by Van Ameyde". | `src/components/TenantShell.tsx` |
+| WCAG 2.1 AA contrast check; a failing theme can not be saved. Accent colours are decoration only and never the only signal. | `src/lib/theme/contrast.ts`, tested in `tests/unit/contrast.test.ts` |
+| A logo can only be saved with the written permission tick; name and date are stored (also enforced by a database constraint). | `PUT /api/admin/themes/[tenantId]`, `20261124000200_tenant_themes.sql` |
+| A theme without that confirmation is a draft: only visible in the admin preview behind login, never on a public link. | `PUBLISHED` filter in `src/lib/server/themes.ts`, tested in `tests/e2e/theme-guard.mjs` |
+| SVG logos with scripts, event handlers or external links are refused; logos are served with a sandbox policy. | `src/lib/theme/logo.ts` |
+| All pages carry noindex (meta tag and `X-Robots-Tag`). | `layout.tsx`, `next.config.ts` |
+| Fonts from an allowlist of fonts already on phones; nothing is loaded from third parties. | `FONT_PAIRS` in `src/lib/theme/model.ts` |
+
+Admin: `/admin` (theme overview, editor with live preview and contrast check, preview behind login).
+Until Microsoft Entra ID is connected, the login is a mock behind `AUTH_MOCK_ENTRA` with one demo
+password (`ADMIN_DEMO_PASSWORD`, at least 12 characters, set as a sensitive variable in Vercel).
+The name entered at login is stored with every theme change and permission confirmation.
+
+On `/demo`, the presenter switch changes the look and the QR codes shown without a reload. A scanned
+QR code always shows its own tenant's theme.
+
+
 ## Five minute demo script
 
 1. **(30 s) The problem.** Show a screenshot of the current form: 14 optional cards, "call 911", other party as two photos.
@@ -74,7 +101,7 @@ psql -d fnol_dev -f supabase/seed.sql
 Run:
 
 ```bash
-pnpm build && BOT_CHECK=false pnpm start   # or: pnpm dev
+NEXT_PUBLIC_BOT_CHECK=false pnpm build && BOT_CHECK=false pnpm start   # bot check only works on Vercel
 ```
 
 Open `http://localhost:3000/demo` (needs `DEMO_MODE=true`).
@@ -85,6 +112,7 @@ Open `http://localhost:3000/demo` (needs `DEMO_MODE=true`).
 pnpm test                                                   # tokens, branching, completeness
 DATABASE_TEST_URL=postgres://postgres@localhost:5432/postgres pnpm test:db   # row level security
 BASE_URL=http://localhost:3000 node tests/e2e/driver-journey.mjs            # definition of done, German
+BASE_URL=http://localhost:3000 node tests/e2e/theme-guard.mjs               # white label safeguards (needs DATABASE_URL, ADMIN_DEMO_PASSWORD)
 LOCALE=en BASE_URL=http://localhost:3000 node tests/e2e/driver-journey.mjs  # same in English
 ```
 
@@ -173,4 +201,5 @@ drop-off per step (last `step_viewed` without `step_completed`), and completenes
 - [CONFIRM] Retention per tenant (30 days for test data).
 - [CONFIRM] Map tiles from OpenStreetMap's public servers are fine for a prototype; production needs a tile provider under contract.
 - [CONFIRM] Australia (000, en-AU) is prepared but switched off.
+- [CONFIRM] Admin login: replace the demo password by Microsoft Entra ID before any real tenant uses the admin page.
 - [CONFIRM] Incident report form (IRF) is the rental partner's own form in the glove box; front and back are separate photos as today.

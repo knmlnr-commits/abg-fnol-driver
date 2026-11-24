@@ -65,7 +65,7 @@ export function Review({ token, view, draft, onFix, onBack, onSubmitted }: {
           <p className="help">{t("steps.review.gaps_note")}</p>
         </section>
       )}
-      <section className="panel-rose" aria-labelledby="sum-h">
+      <section className="panel-surface" aria-labelledby="sum-h">
         <h2 id="sum-h">{t("steps.review.summary")}</h2>
         <Summary draft={draft} view={view} />
       </section>

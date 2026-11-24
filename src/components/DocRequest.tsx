@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { api, errorKey, type IncidentView } from "@/lib/client/api";
 import { EvidenceCapture } from "./EvidenceCapture";
-import { ApplyTheme } from "./ApplyTheme";
 
 /** A handler asked for specific items. Same capture component, limited to those items. */
 export function DocRequest({ token }: { token: string }) {
@@ -22,11 +21,10 @@ export function DocRequest({ token }: { token: string }) {
   const complete = slots.every((s) => view.evidence.some((e) => e.slot === s));
   return (
     <main className="page stack">
-      <ApplyTheme theme={view.theme} />
       <h1>{t("docreq.title")}</h1>
       <p>{t("docreq.intro", { reference: view.reference })}</p>
       {view.request.message && (
-        <div className="panel-rose">
+        <div className="panel-surface">
           <h2 style={{ fontSize: "1rem" }}>{t("docreq.message")}</h2>
           <p style={{ margin: 0 }}>{view.request.message}</p>
         </div>

@@ -50,7 +50,7 @@ export function StartForm({ entry, context, retentionDays }: { entry: string; co
           {context.rentalAgreement && (<><dt>{t("start.agreement")}</dt><dd>{context.rentalAgreement}</dd></>)}
         </dl>
       </section>
-      <section className="panel-rose stack" aria-labelledby="priv-h">
+      <section className="panel-surface stack" aria-labelledby="priv-h">
         <h2 id="priv-h">{t("start.privacy_title")}</h2>
         <p>{t("start.privacy_text", { days: retentionDays })}</p>
         <p><a href="/privacy" target="_blank" rel="noopener">{t("start.privacy_more")}</a></p>
