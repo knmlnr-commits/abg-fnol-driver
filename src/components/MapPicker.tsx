@@ -26,6 +26,9 @@ export function MapPicker({ value, center, onChange, label }: { value: Point | n
       const m = L.map(el.current, { zoomControl: true, attributionControl: true }).setView([start.lat, start.lng], value ? 17 : 13);
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
+        // OpenStreetMap's tile policy needs a referrer. Send only the site's origin, never the
+        // page path, because personal links carry a token in the path.
+        referrerPolicy: "strict-origin",
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(m);
       const icon = L.divIcon({
