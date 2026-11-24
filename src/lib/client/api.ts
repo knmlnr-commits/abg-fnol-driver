@@ -8,7 +8,6 @@ export type CompletenessView = { score: number; missing: MissingItem[] };
 export type EvidenceView = { id: string; slot: EvidenceSlot; mime: string; url: string | null; createdAt: string };
 export type IncidentView = {
   mode: "incident" | "docreq";
-  theme?: "va" | "partner_red";
   reference: string;
   status: "draft" | "submitted";
   step: string | null;
