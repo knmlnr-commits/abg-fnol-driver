@@ -219,20 +219,62 @@
       "failed": "Hochladen fehlgeschlagen",
       "location_note": "Zeit und Ort werden mit jedem Foto gespeichert.",
       "slots": {
-        "scene_overview": { "title": "Überblick über die Unfallstelle", "hint": "Treten Sie zurück. Beide Autos und die Straße in einem Bild." },
-        "own_plate": { "title": "Kennzeichen Ihres Autos", "hint": "Gerade von vorne, das Kennzeichen lesbar." },
-        "own_damage": { "title": "Schaden an Ihrem Auto", "hint": "Nah, das ganze beschädigte Teil im Bild." },
-        "corner_front_left": { "title": "Ihr Auto, vorne links", "hint": "Aus etwa drei Schritten Abstand." },
-        "corner_front_right": { "title": "Ihr Auto, vorne rechts", "hint": "Aus etwa drei Schritten Abstand." },
-        "corner_rear_left": { "title": "Ihr Auto, hinten links", "hint": "Aus etwa drei Schritten Abstand." },
-        "corner_rear_right": { "title": "Ihr Auto, hinten rechts", "hint": "Aus etwa drei Schritten Abstand." },
-        "other_damage": { "title": "Schaden am anderen Fahrzeug", "hint": "Das ganze beschädigte Teil im Bild." },
-        "other_plate": { "title": "Kennzeichen des anderen Fahrzeugs", "hint": "Gerade von vorne, das Kennzeichen lesbar." },
-        "irf_front": { "title": "Unfallbericht, Vorderseite", "hint": "Flach, alle vier Ecken sichtbar, unterschrieben." },
-        "irf_back": { "title": "Unfallbericht, Rückseite", "hint": "Flach, alle vier Ecken sichtbar." },
-        "police_report": { "title": "Polizeibericht", "hint": "Foto oder PDF. Sie können ihn später nachreichen." },
-        "glass_closeup": { "title": "Glasschaden aus der Nähe", "hint": "Halten Sie eine Münze daneben als Größenvergleich." },
-        "other_document": { "title": "Weitere Dokumente", "hint": "Alles, was sonst noch hilft." }
+        "scene_overview": {
+          "title": "Überblick über die Unfallstelle",
+          "hint": "Treten Sie zurück. Beide Autos und die Straße in einem Bild."
+        },
+        "own_plate": {
+          "title": "Kennzeichen Ihres Autos",
+          "hint": "Gerade von vorne, das Kennzeichen lesbar."
+        },
+        "own_damage": {
+          "title": "Schaden an Ihrem Auto",
+          "hint": "Nah, das ganze beschädigte Teil im Bild."
+        },
+        "corner_front_left": {
+          "title": "Ihr Auto, vorne links",
+          "hint": "Aus etwa drei Schritten Abstand."
+        },
+        "corner_front_right": {
+          "title": "Ihr Auto, vorne rechts",
+          "hint": "Aus etwa drei Schritten Abstand."
+        },
+        "corner_rear_left": {
+          "title": "Ihr Auto, hinten links",
+          "hint": "Aus etwa drei Schritten Abstand."
+        },
+        "corner_rear_right": {
+          "title": "Ihr Auto, hinten rechts",
+          "hint": "Aus etwa drei Schritten Abstand."
+        },
+        "other_damage": {
+          "title": "Schaden am anderen Fahrzeug",
+          "hint": "Das ganze beschädigte Teil im Bild."
+        },
+        "other_plate": {
+          "title": "Kennzeichen des anderen Fahrzeugs",
+          "hint": "Gerade von vorne, das Kennzeichen lesbar."
+        },
+        "irf_front": {
+          "title": "Unfallbericht, Vorderseite",
+          "hint": "Flach, alle vier Ecken sichtbar, unterschrieben."
+        },
+        "irf_back": {
+          "title": "Unfallbericht, Rückseite",
+          "hint": "Flach, alle vier Ecken sichtbar."
+        },
+        "police_report": {
+          "title": "Polizeibericht",
+          "hint": "Foto oder PDF. Sie können ihn später nachreichen."
+        },
+        "glass_closeup": {
+          "title": "Glasschaden aus der Nähe",
+          "hint": "Halten Sie eine Münze daneben als Größenvergleich."
+        },
+        "other_document": {
+          "title": "Weitere Dokumente",
+          "hint": "Alles, was sonst noch hilft."
+        }
       }
     },
     "witnesses": {
@@ -259,43 +301,154 @@
     }
   },
   "missing": {
-    "injured": { "label": "Verletzungen", "why": "Verletzungen ändern, wie schnell wir handeln." },
-    "police": { "label": "Polizei ja oder nein", "why": "Zeigt uns, ob es einen Polizeibericht gibt." },
-    "police_reference": { "label": "Aktenzeichen der Polizei", "why": "Wir brauchen es, um den Polizeibericht anzufordern." },
-    "vehicle_plate": { "label": "Ihr Kennzeichen", "why": "Wir brauchen es, um das Auto zu finden." },
-    "rental_agreement": { "label": "Mietvertragsnummer", "why": "Verknüpft den Schaden mit Ihrer Miete, so brauchen wir keine weiteren persönlichen Daten." },
-    "contact": { "label": "E-Mail oder Handynummer", "why": "Ohne sie können wir Ihnen keine Frage stellen." },
-    "incident_type": { "label": "Was passiert ist", "why": "Bestimmt die folgenden Fragen." },
-    "occurred_at": { "label": "Datum und Uhrzeit", "why": "Nötig für den Versicherungsschutz." },
-    "location": { "label": "Ort", "why": "Nötig, um die Haftung zu klären." },
-    "description": { "label": "Ihre Beschreibung", "why": "Ihre eigenen Worte helfen dem Bearbeiter am meisten." },
-    "damage_zones": { "label": "Beschädigte Teile", "why": "Die Station kann die Reparatur planen." },
-    "collision_kind": { "label": "Art des Zusammenstoßes", "why": "Erster Hinweis, wer haftet." },
-    "other_plate": { "label": "Kennzeichen des anderen Fahrzeugs", "why": "Ohne das können wir uns den Schaden nicht von der Gegenseite holen." },
-    "other_insurer": { "label": "Versicherung der Gegenseite", "why": "Beschleunigt die Regulierung mit der Gegenseite." },
-    "other_contact": { "label": "Kontakt des anderen Fahrers", "why": "Nötig, wenn die Gegenseite widerspricht." },
-    "irf_status": { "label": "Unfallbericht", "why": "Ein unterschriebener Bericht erspart lange Diskussionen." },
-    "hit_object": { "label": "Womit Sie zusammengestoßen sind", "why": "Entscheidet, ob jemand anderes zahlt." },
-    "found_at": { "label": "Wann Sie es entdeckt haben", "why": "Grenzt ein, wann es passiert ist." },
-    "theft_kind": { "label": "Was gestohlen wurde", "why": "Bestimmt die nächsten Schritte." },
-    "keys_present": { "label": "Autoschlüssel", "why": "Die Versicherung fragt nach einem Diebstahl danach." },
-    "items_taken": { "label": "Gestohlene Sachen", "why": "Nötig für die Polizei und die Regulierung." },
-    "glass_part": { "label": "Welches Glas", "why": "Entscheidet Reparatur oder Austausch." },
-    "glass_damage": { "label": "Steinschlag oder Riss", "why": "Entscheidet Reparatur oder Austausch." },
-    "drivable": { "label": "Fahrbereit", "why": "Zeigt der Station, ob Sie ein anderes Auto brauchen." },
-    "photo_scene_overview": { "label": "Foto der Unfallstelle", "why": "Zeigt die Situation, wie sie war." },
-    "photo_own_plate": { "label": "Foto Ihres Kennzeichens", "why": "Belegt, um welches Auto es geht." },
-    "photo_own_damage": { "label": "Foto des Schadens", "why": "Nötig, um die Reparatur zu schätzen." },
-    "photo_corner_front_left": { "label": "Foto vorne links", "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen." },
-    "photo_corner_front_right": { "label": "Foto vorne rechts", "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen." },
-    "photo_corner_rear_left": { "label": "Foto hinten links", "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen." },
-    "photo_corner_rear_right": { "label": "Foto hinten rechts", "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen." },
-    "photo_other_damage": { "label": "Foto des anderen Fahrzeugs", "why": "Gleicht den Schaden an beiden Autos ab." },
-    "photo_other_plate": { "label": "Foto des anderen Kennzeichens", "why": "Belegt, wer die Gegenseite ist." },
-    "photo_irf_front": { "label": "Unfallbericht, Vorderseite", "why": "Der unterschriebene Bericht ist der stärkste Beleg." },
-    "photo_irf_back": { "label": "Unfallbericht, Rückseite", "why": "Skizze und Bemerkungen stehen auf der Rückseite." },
-    "photo_police_report": { "label": "Polizeibericht", "why": "Die Versicherung verlangt ihn nach Polizeieinsatz oder Diebstahl." },
-    "photo_glass_closeup": { "label": "Nahaufnahme des Glases", "why": "Entscheidet Reparatur oder Austausch." }
+    "injured": {
+      "label": "Verletzungen",
+      "why": "Verletzungen ändern, wie schnell wir handeln."
+    },
+    "police": {
+      "label": "Polizei ja oder nein",
+      "why": "Zeigt uns, ob es einen Polizeibericht gibt."
+    },
+    "police_reference": {
+      "label": "Aktenzeichen der Polizei",
+      "why": "Wir brauchen es, um den Polizeibericht anzufordern."
+    },
+    "vehicle_plate": {
+      "label": "Ihr Kennzeichen",
+      "why": "Wir brauchen es, um das Auto zu finden."
+    },
+    "rental_agreement": {
+      "label": "Mietvertragsnummer",
+      "why": "Verknüpft den Schaden mit Ihrer Miete, so brauchen wir keine weiteren persönlichen Daten."
+    },
+    "contact": {
+      "label": "E-Mail oder Handynummer",
+      "why": "Ohne sie können wir Ihnen keine Frage stellen."
+    },
+    "incident_type": {
+      "label": "Was passiert ist",
+      "why": "Bestimmt die folgenden Fragen."
+    },
+    "occurred_at": {
+      "label": "Datum und Uhrzeit",
+      "why": "Nötig für den Versicherungsschutz."
+    },
+    "location": {
+      "label": "Ort",
+      "why": "Nötig, um die Haftung zu klären."
+    },
+    "description": {
+      "label": "Ihre Beschreibung",
+      "why": "Ihre eigenen Worte helfen dem Bearbeiter am meisten."
+    },
+    "damage_zones": {
+      "label": "Beschädigte Teile",
+      "why": "Die Station kann die Reparatur planen."
+    },
+    "collision_kind": {
+      "label": "Art des Zusammenstoßes",
+      "why": "Erster Hinweis, wer haftet."
+    },
+    "other_plate": {
+      "label": "Kennzeichen des anderen Fahrzeugs",
+      "why": "Ohne das können wir uns den Schaden nicht von der Gegenseite holen."
+    },
+    "other_insurer": {
+      "label": "Versicherung der Gegenseite",
+      "why": "Beschleunigt die Regulierung mit der Gegenseite."
+    },
+    "other_contact": {
+      "label": "Kontakt des anderen Fahrers",
+      "why": "Nötig, wenn die Gegenseite widerspricht."
+    },
+    "irf_status": {
+      "label": "Unfallbericht",
+      "why": "Ein unterschriebener Bericht erspart lange Diskussionen."
+    },
+    "hit_object": {
+      "label": "Womit Sie zusammengestoßen sind",
+      "why": "Entscheidet, ob jemand anderes zahlt."
+    },
+    "found_at": {
+      "label": "Wann Sie es entdeckt haben",
+      "why": "Grenzt ein, wann es passiert ist."
+    },
+    "theft_kind": {
+      "label": "Was gestohlen wurde",
+      "why": "Bestimmt die nächsten Schritte."
+    },
+    "keys_present": {
+      "label": "Autoschlüssel",
+      "why": "Die Versicherung fragt nach einem Diebstahl danach."
+    },
+    "items_taken": {
+      "label": "Gestohlene Sachen",
+      "why": "Nötig für die Polizei und die Regulierung."
+    },
+    "glass_part": {
+      "label": "Welches Glas",
+      "why": "Entscheidet Reparatur oder Austausch."
+    },
+    "glass_damage": {
+      "label": "Steinschlag oder Riss",
+      "why": "Entscheidet Reparatur oder Austausch."
+    },
+    "drivable": {
+      "label": "Fahrbereit",
+      "why": "Zeigt der Station, ob Sie ein anderes Auto brauchen."
+    },
+    "photo_scene_overview": {
+      "label": "Foto der Unfallstelle",
+      "why": "Zeigt die Situation, wie sie war."
+    },
+    "photo_own_plate": {
+      "label": "Foto Ihres Kennzeichens",
+      "why": "Belegt, um welches Auto es geht."
+    },
+    "photo_own_damage": {
+      "label": "Foto des Schadens",
+      "why": "Nötig, um die Reparatur zu schätzen."
+    },
+    "photo_corner_front_left": {
+      "label": "Foto vorne links",
+      "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen."
+    },
+    "photo_corner_front_right": {
+      "label": "Foto vorne rechts",
+      "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen."
+    },
+    "photo_corner_rear_left": {
+      "label": "Foto hinten links",
+      "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen."
+    },
+    "photo_corner_rear_right": {
+      "label": "Foto hinten rechts",
+      "why": "Zeigt ältere Schäden, damit Sie nicht dafür zahlen."
+    },
+    "photo_other_damage": {
+      "label": "Foto des anderen Fahrzeugs",
+      "why": "Gleicht den Schaden an beiden Autos ab."
+    },
+    "photo_other_plate": {
+      "label": "Foto des anderen Kennzeichens",
+      "why": "Belegt, wer die Gegenseite ist."
+    },
+    "photo_irf_front": {
+      "label": "Unfallbericht, Vorderseite",
+      "why": "Der unterschriebene Bericht ist der stärkste Beleg."
+    },
+    "photo_irf_back": {
+      "label": "Unfallbericht, Rückseite",
+      "why": "Skizze und Bemerkungen stehen auf der Rückseite."
+    },
+    "photo_police_report": {
+      "label": "Polizeibericht",
+      "why": "Die Versicherung verlangt ihn nach Polizeieinsatz oder Diebstahl."
+    },
+    "photo_glass_closeup": {
+      "label": "Nahaufnahme des Glases",
+      "why": "Entscheidet Reparatur oder Austausch."
+    }
   },
   "done": {
     "title": "Danke. Ihre Meldung ist eingegangen.",
@@ -329,7 +482,17 @@
     "title": "Demo QR-Codes",
     "intro": "Erfundene Stationen und Fahrzeuge. Mit dem Handy scannen oder auf Öffnen tippen.",
     "open": "Öffnen",
-    "kinds": { "station": "Stationskarte", "vehicle": "Fahrzeugaufkleber", "agreement": "Mietvertrag" },
-    "disabled": "Die Demoseite ist ausgeschaltet."
+    "kinds": {
+      "station": "Stationskarte",
+      "vehicle": "Fahrzeugaufkleber",
+      "agreement": "Mietvertrag"
+    },
+    "disabled": "Die Demoseite ist ausgeschaltet.",
+    "theme": {
+      "title": "Aussehen der Demo",
+      "va": "Van Ameyde",
+      "partner_red": "Vermietpartner Rot",
+      "note": "Partner-Themes nutzen nur neutrale Farben. Logo und Bilder eines Partners nur mit dessen Erlaubnis."
+    }
   }
 }

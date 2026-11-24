@@ -30,7 +30,7 @@ export function MapPicker({ value, center, onChange, label }: { value: Point | n
       }).addTo(m);
       const icon = L.divIcon({
         className: "",
-        html: '<svg width="36" height="48" viewBox="0 0 36 48" aria-hidden="true"><path d="M18 0C8 0 0 8 0 18c0 13 18 30 18 30s18-17 18-30C36 8 28 0 18 0z" fill="#07017E"/><circle cx="18" cy="18" r="7" fill="#00D8B9"/></svg>',
+        html: '<svg width="36" height="48" viewBox="0 0 36 48" aria-hidden="true"><path d="M18 0C8 0 0 8 0 18c0 13 18 30 18 30s18-17 18-30C36 8 28 0 18 0z" style="fill:var(--primary)"/><circle cx="18" cy="18" r="7" style="fill:var(--accent)"/></svg>',
         iconSize: [36, 48],
         iconAnchor: [18, 48],
       });

@@ -9,9 +9,9 @@ export function ScoreRing({ score }: { score: number }) {
   const c = 2 * Math.PI * r;
   return (
     <svg className="ring" viewBox="0 0 72 72" aria-hidden="true">
-      <circle cx="36" cy="36" r={r} fill="none" stroke="#f4f3fb" strokeWidth="8" />
-      <circle cx="36" cy="36" r={r} fill="none" stroke="#00D8B9" strokeWidth="8" strokeDasharray={`${(score / 100) * c} ${c}`} transform="rotate(-90 36 36)" strokeLinecap="round" />
-      <text x="36" y="41" textAnchor="middle" fontFamily="Verdana" fontWeight="700" fontSize="15" fill="#07017E">{score}%</text>
+      <circle cx="36" cy="36" r={r} fill="none" style={{ stroke: "var(--soft)" }} strokeWidth="8" />
+      <circle cx="36" cy="36" r={r} fill="none" style={{ stroke: "var(--accent)" }} strokeWidth="8" strokeDasharray={`${(score / 100) * c} ${c}`} transform="rotate(-90 36 36)" strokeLinecap="round" />
+      <text x="36" y="41" textAnchor="middle" fontWeight="700" fontSize="15" style={{ fill: "var(--primary)", fontFamily: "var(--font-body)" }}>{score}%</text>
     </svg>
   );
 }

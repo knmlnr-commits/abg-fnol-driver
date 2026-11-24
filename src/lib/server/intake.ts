@@ -19,6 +19,7 @@ import {
 import { q, q1, tx } from "./db";
 import { HttpError } from "./guard";
 import { storage } from "./storage";
+import { effectiveTheme } from "./theme";
 
 let cachedRing: KeyRing | null = null;
 export function ring(): KeyRing {
@@ -155,7 +156,7 @@ export async function startIncident(entryToken: string, locale: Locale, location
 type IncidentRow = {
   id: string; tenant_id: string; reference: string; status: "draft" | "submitted"; locale: string;
   current_step: string | null; draft: Draft; station_name: string | null; city: string | null; country: string | null;
-  lat: number | null; lng: number | null; submitted_at: string | null; completeness_score: number;
+  lat: number | null; lng: number | null; theme: string | null; submitted_at: string | null; completeness_score: number;
 };
 
 export type Auth = {
@@ -193,9 +194,10 @@ export async function authenticate(token: string): Promise<Auth> {
     throw new HttpError(410, "invalid_link");
   }
   const incident = await q1<IncidentRow>(
-    `select i.id, i.tenant_id, i.reference, i.status, i.locale, i.current_step, i.draft, s.name as station_name, s.city, s.country, s.lat, s.lng,
+    `select i.id, i.tenant_id, i.reference, i.status, i.locale, i.current_step, i.draft, s.name as station_name, s.city, s.country, s.lat, s.lng, t.theme,
             i.submitted_at, i.completeness_score
-       from public.incidents i left join public.stations s on s.id = i.station_id where i.id = $1`,
+       from public.incidents i left join public.stations s on s.id = i.station_id
+       join public.tenants t on t.id = i.tenant_id where i.id = $1`,
     [link.incident_id],
   );
   if (!incident) throw new HttpError(410, "invalid_link");
@@ -240,6 +242,7 @@ export async function view(auth: Auth) {
   const comp = completeness(inc.draft, all.map((e) => e.slot));
   return {
     mode: auth.mode,
+    theme: await effectiveTheme(inc.theme),
     reference: inc.reference,
     status: inc.status,
     step: inc.current_step,

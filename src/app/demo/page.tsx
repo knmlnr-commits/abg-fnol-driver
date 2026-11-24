@@ -4,6 +4,8 @@ import { getTranslations } from "next-intl/server";
 import { flags } from "@/lib/config/flags";
 import { q } from "@/lib/server/db";
 import { signEntryToken } from "@/lib/server/intake";
+import { demoThemeOverride } from "@/lib/server/theme";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +22,7 @@ export default async function DemoPage() {
   const cards = await Promise.all(
     rows.map(async (r) => {
       const url = `${origin}/r/${await signEntryToken(r.id)}`;
-      const svg = await QRCode.toString(url, { type: "svg", margin: 1, color: { dark: "#07017E", light: "#FFFFFF" }, errorCorrectionLevel: "M" });
+      const svg = await QRCode.toString(url, { type: "svg", margin: 1, color: { dark: "#000000", light: "#FFFFFF" }, errorCorrectionLevel: "M" });
       return { ...r, url, svg };
     }),
   );
@@ -28,6 +30,7 @@ export default async function DemoPage() {
     <main className="page stack" style={{ maxWidth: 960 }}>
       <h1>{t("title")}</h1>
       <p>{t("intro")}</p>
+      <ThemeSwitch current={await demoThemeOverride()} />
       <div className="qrgrid">
         {cards.map((c) => (
           <section key={c.id} className="card">

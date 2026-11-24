@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server";
+import { ApplyTheme } from "@/components/ApplyTheme";
 import { StartForm } from "@/components/StartForm";
+import { effectiveTheme } from "@/lib/server/theme";
 import { q1 } from "@/lib/server/db";
 import { HttpError } from "@/lib/server/guard";
 import { resolveEntry, type EntryContext } from "@/lib/server/intake";
@@ -21,12 +23,16 @@ export default async function EntryPage({ params }: PageProps<"/r/[token]">) {
       </main>
     );
   }
-  const tenant = await q1<{ retention_days: number }>("select retention_days from public.tenants where id = $1", [ctx.tenantId]);
+  const tenant = await q1<{ retention_days: number; theme: string }>("select retention_days, theme from public.tenants where id = $1", [ctx.tenantId]);
+  const theme = await effectiveTheme(tenant?.theme);
   return (
+    <>
+    <ApplyTheme theme={theme} />
     <StartForm
       entry={token}
       context={{ stationName: ctx.stationName, city: ctx.city, plate: ctx.plate, rentalAgreement: ctx.rentalAgreement, emergency: ctx.emergency }}
       retentionDays={tenant?.retention_days ?? 30}
     />
+    </>
   );
 }

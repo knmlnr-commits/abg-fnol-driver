@@ -23,7 +23,7 @@ export function Done({ token, view, onChange }: { token: string; view: IncidentV
     <main className="page stack">
       <h1 tabIndex={-1}>{t("done.title")}</h1>
       <section className="card" aria-labelledby="ref-h">
-        <h2 id="ref-h" className="help" style={{ fontFamily: "Verdana", fontSize: "0.95rem" }}>{t("done.reference")}</h2>
+        <h2 id="ref-h" className="help" style={{ fontFamily: "var(--font-body)", fontSize: "0.95rem" }}>{t("done.reference")}</h2>
         <p className="ref">{view.reference}</p>
       </section>
       {view.completeness.missing.length > 0 && (

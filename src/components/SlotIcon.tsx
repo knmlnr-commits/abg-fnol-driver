@@ -1,8 +1,9 @@
 import type { EvidenceSlot } from "@/lib/domain/constants";
 
 /** Example outline per shot: shows the driver what the picture should contain. */
-const navy = "#07017E";
-const accent = "#00D8B9";
+const navy = "currentColor";
+const acc = { stroke: "var(--accent)" } as const;
+const accFill = { fill: "var(--accent)" } as const;
 
 function CarSide({ highlight }: { highlight?: "front" | "rear" | "middle" }) {
   return (
@@ -15,7 +16,7 @@ function CarSide({ highlight }: { highlight?: "front" | "rear" | "middle" }) {
           cx={highlight === "front" ? 56 : highlight === "rear" ? 9 : 32}
           cy="33"
           r="8"
-          stroke={accent}
+          style={acc}
           strokeWidth="3"
         />
       )}
@@ -29,7 +30,7 @@ function Corner({ side }: { side: "fl" | "fr" | "rl" | "rr" }) {
   return (
     <g fill="none" stroke={navy} strokeWidth="2.5">
       <rect x="20" y="10" width="24" height="44" rx="6" />
-      <circle cx={x} cy={y} r="7" fill={accent} stroke="none" />
+      <circle cx={x} cy={y} r="7" style={accFill} stroke="none" />
       <path d={`M${x} ${y} L32 32`} strokeDasharray="3 3" />
     </g>
   );
@@ -39,7 +40,7 @@ function Plate() {
   return (
     <g fill="none" stroke={navy} strokeWidth="2.5">
       <rect x="6" y="22" width="52" height="20" rx="3" />
-      <rect x="6" y="22" width="8" height="20" fill={accent} stroke="none" />
+      <rect x="6" y="22" width="8" height="20" style={accFill} stroke="none" />
       <path d="M20 32 H52" strokeWidth="3" />
     </g>
   );
@@ -49,7 +50,7 @@ function Doc({ back }: { back?: boolean }) {
   return (
     <g fill="none" stroke={navy} strokeWidth="2.5">
       <rect x="14" y="6" width="36" height="52" rx="3" />
-      {back ? <path d="M20 18 L44 40 M20 40 L32 28" stroke={accent} strokeWidth="3" /> : <path d="M20 16 H44 M20 24 H44 M20 32 H38 M34 48 Q40 42 44 48" />}
+      {back ? <path d="M20 18 L44 40 M20 40 L32 28" style={acc} strokeWidth="3" /> : <path d="M20 16 H44 M20 24 H44 M20 32 H38 M34 48 Q40 42 44 48" />}
     </g>
   );
 }
@@ -60,7 +61,7 @@ function Scene() {
       <path d="M2 50 L62 50" />
       <rect x="6" y="30" width="22" height="14" rx="4" />
       <rect x="34" y="30" width="22" height="14" rx="4" transform="rotate(-15 45 37)" />
-      <path d="M28 20 l4 6 l4 -6" stroke={accent} strokeWidth="3" />
+      <path d="M28 20 l4 6 l4 -6" style={acc} strokeWidth="3" />
     </g>
   );
 }
@@ -69,7 +70,7 @@ function Glass() {
   return (
     <g fill="none" stroke={navy} strokeWidth="2.5">
       <path d="M8 46 L16 16 H48 L56 46 Z" />
-      <path d="M30 26 l4 6 l-5 3 l6 6" stroke={accent} strokeWidth="3" />
+      <path d="M30 26 l4 6 l-5 3 l6 6" style={acc} strokeWidth="3" />
       <circle cx="46" cy="40" r="4" />
     </g>
   );
@@ -103,5 +104,5 @@ export function SlotIcon({ slot }: { slot: EvidenceSlot }) {
       default: return <Files />;
     }
   })();
-  return <svg viewBox="0 0 64 64" aria-hidden="true">{inner}</svg>;
+  return <svg viewBox="0 0 64 64" aria-hidden="true" style={{ color: "var(--primary)" }}>{inner}</svg>;
 }
