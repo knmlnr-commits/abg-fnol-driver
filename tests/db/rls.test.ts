@@ -119,7 +119,7 @@ describe.skipIf(!ADMIN_URL)("row level security", () => {
 
   it("keeps master data per tenant", async () => {
     const s1 = await as<{ code: string }>("authenticated", H1, "select code from public.stations");
-    expect(s1.length).toBe(6);
+    expect(s1.length).toBe(6); // seed tenant 1 has six stations
     const s2 = await as<{ code: string }>("authenticated", H2, "select code from public.stations");
     expect(s2.map((s) => s.code)).toEqual(["XX-OTH-01"]);
   });
@@ -144,6 +144,44 @@ describe.skipIf(!ADMIN_URL)("row level security", () => {
   it("lets a handler see only their own handler record", async () => {
     const rows = await as<{ user_id: string }>("authenticated", H1, "select user_id from public.handler_users");
     expect(rows.map((r) => r.user_id)).toEqual([H1]);
+  });
+
+  it("keeps tenant themes server only", async () => {
+    await denied("anon", null, "select * from public.tenant_themes");
+    await denied("authenticated", A1, "select * from public.tenant_themes");
+  });
+
+  it("refuses to store a logo without the written permission, name and date", async () => {
+    await expect(db.query(
+      `insert into public.tenant_themes (tenant_id, display_name, primary_color, accent_color, background_color, text_color, font_pair, logo, logo_mime)
+       values ('${T2}', 'Other', '#4A1F5C', '#0E7C86', '#FAF8F5', '#1E1B24', 'system_sans', '\\x3c7376672f3e', 'image/svg+xml')`,
+    )).rejects.toThrow(/check constraint/);
+    await expect(db.query(
+      `insert into public.tenant_themes (tenant_id, display_name, primary_color, accent_color, background_color, text_color, font_pair, logo, logo_mime, permission_by)
+       values ('${T2}', 'Other', '#4A1F5C', '#0E7C86', '#FAF8F5', '#1E1B24', 'system_sans', '\\x3c7376672f3e', 'image/svg+xml', 'Someone')`,
+    )).rejects.toThrow(/check constraint/);
+  });
+
+  it("does not publish a draft theme", async () => {
+    await db.query("begin");
+    try {
+      await db.query(
+        `insert into public.tenant_themes (tenant_id, display_name, primary_color, accent_color, background_color, text_color, font_pair)
+         values ('${T2}', 'Draft brand', '#4A1F5C', '#0E7C86', '#FAF8F5', '#1E1B24', 'system_sans')`,
+      );
+      const pub = await db.query(`select 1 from public.tenant_themes where tenant_id = '${T2}' and permission_at is not null`);
+      expect(pub.rows).toEqual([]);
+    } finally {
+      await db.query("rollback");
+    }
+  });
+
+  it("seeds exactly one default theme and a published Northline theme", async () => {
+    const r = await db.query(`select display_name, is_default, permission_at is not null as published from public.tenant_themes order by display_name`);
+    expect(r.rows).toEqual([
+      { display_name: "Northline Rental", is_default: false, published: true },
+      { display_name: "Van Ameyde", is_default: true, published: true },
+    ]);
   });
 
   it("lets the service role create references and rate limit", async () => {

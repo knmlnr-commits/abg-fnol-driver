@@ -29,7 +29,9 @@ export type EntryClaims = {
 };
 export type IncidentClaims = { typ: "incident"; jti: string; sub: string };
 export type DocReqClaims = { typ: "docreq"; jti: string; sub: string; rid: string };
-export type AnyClaims = EntryClaims | IncidentClaims | DocReqClaims;
+/** Admin session (mock login until Entra ID): who is signed in. */
+export type AdminClaims = { typ: "admin"; jti: string; name: string };
+export type AnyClaims = EntryClaims | IncidentClaims | DocReqClaims | AdminClaims;
 
 export type KeyRing = { activeKid: string; keys: Record<string, Uint8Array> };
 
