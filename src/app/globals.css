@@ -32,7 +32,7 @@ a { color: var(--primary); text-underline-offset: 3px; }
 .footer p { margin: 0 0 4px; }
 .footer .powered { font-weight: 700; }
 .wordmark { font-family: var(--font-head); font-weight: 700; font-size: 1.1rem; color: var(--primary); }
-.logo { height: 36px; width: auto; max-width: 200px; display: block; }
+.logo { height: 52px; width: auto; max-width: min(260px, 60vw); display: block; object-fit: contain; object-position: left center; }
 .topbar {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--background);
