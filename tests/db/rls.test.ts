@@ -12,7 +12,7 @@ const ADMIN_URL = process.env.DATABASE_TEST_URL;
 const DB = "fnol_rls_test";
 const root = path.resolve(import.meta.dirname, "../..");
 
-const T1 = "00000000-0000-4000-8000-000000000001"; // seeded "Rental partner"
+const T1 = "00000000-0000-4000-8000-000000000001"; // seeded "Demo rental company"
 const T2 = "00000000-0000-4000-8000-0000000000f2"; // second tenant
 const H1 = "10000000-0000-4000-8000-000000000001"; // handler of T1
 const A1 = "10000000-0000-4000-8000-000000000002"; // admin of T1
@@ -176,12 +176,9 @@ describe.skipIf(!ADMIN_URL)("row level security", () => {
     }
   });
 
-  it("seeds exactly one default theme and a published Northline theme", async () => {
-    const r = await db.query(`select display_name, is_default, permission_at is not null as published from public.tenant_themes order by display_name`);
-    expect(r.rows).toEqual([
-      { display_name: "Northline Rental", is_default: false, published: true },
-      { display_name: "Van Ameyde", is_default: true, published: true },
-    ]);
+  it("seeds exactly one theme: the Van Ameyde default", async () => {
+    const r = await db.query(`select display_name, is_default, permission_at is not null as published from public.tenant_themes`);
+    expect(r.rows).toEqual([{ display_name: "Van Ameyde", is_default: true, published: true }]);
   });
 
   it("lets the service role create references and rate limit", async () => {

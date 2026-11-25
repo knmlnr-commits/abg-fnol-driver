@@ -2,7 +2,7 @@
 //   BASE_URL=http://localhost:3100 DATABASE_URL=... ADMIN_DEMO_PASSWORD=... node tests/e2e/theme-guard.mjs
 // - admin pages, draft previews and draft logos are not reachable without login
 // - a draft theme never shows on a public QR link
-// - non default themes show the demo banner; every page says Powered by Van Ameyde; noindex is set
+// - partner themes show the demo banner; every page says Powered by Van Ameyde; noindex is set
 import pg from "pg";
 
 const BASE = process.env.BASE_URL ?? "http://localhost:3100";
@@ -18,7 +18,16 @@ await db.query(`delete from public.tenant_themes where tenant_id = $1`, [T1]);
 await db.query(
   `insert into public.tenant_themes (tenant_id, display_name, primary_color, accent_color, background_color, text_color, font_pair)
    values ($1, $2, '#203040', '#406080', '#FFFFFF', '#111111', 'system_sans')`, [T1, DRAFT_NAME]);
-const northline = (await db.query(`select id from public.tenant_themes where display_name = 'Northline Rental'`)).rows[0].id;
+// A neutral test brand with a published theme and logo, created for this run and removed after.
+const TB = "00000000-0000-4000-8000-0000000000e2";
+await db.query(`delete from public.tenants where id = $1`, [TB]);
+await db.query(`insert into public.tenants (id, name) values ($1, 'Test brand company')`, [TB]);
+await db.query(`insert into public.stations (id, tenant_id, code, name, city, country) values ('00000000-0000-4000-8000-0000000001e2', $1, 'XX-TST-01', 'Test station', 'Testcity', 'NL')`, [TB]);
+await db.query(`insert into public.entry_tokens (id, tenant_id, kind, station_id, label) values ('00000000-0000-4000-8000-0000000003e2', $1, 'station', '00000000-0000-4000-8000-0000000001e2', 'Station card TEST-01')`, [TB]);
+const brand = (await db.query(
+  `insert into public.tenant_themes (tenant_id, display_name, primary_color, accent_color, background_color, text_color, font_pair, logo, logo_mime, permission_by, permission_at)
+   values ($1, 'Test brand', '#203040', '#406080', '#FFFFFF', '#111111', 'system_sans', convert_to('<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 100 20"><path d="M0 0h100v20H0z"/></svg>', 'UTF8'), 'image/svg+xml', 'Test run', now())
+   returning id`, [TB])).rows[0].id;
 
 try {
   // Without login
@@ -26,7 +35,7 @@ try {
   check(r.status >= 300 && r.status < 400 && r.headers.get("location")?.includes("/admin/login"), "admin overview redirects to login");
   r = await get(`/admin/themes/${T1}/preview`);
   check(r.status >= 300 && r.status < 400 && r.headers.get("location")?.includes("/admin/login"), "draft preview redirects to login");
-  r = await get(`/api/admin/themes/logo/${northline}`);
+  r = await get(`/api/admin/themes/logo/${brand}`);
   check(r.status === 401, "admin logo route needs login");
   r = await get(`/api/admin/themes/${T1}`, { method: "PUT", body: "{}", headers: { "content-type": "application/json" } });
   check(r.status === 401, "saving a theme needs login");
@@ -45,12 +54,14 @@ try {
   check(!vaPage.includes(DRAFT_NAME), "a draft theme is not shown on the tenant's public QR link");
   check(!vaPage.includes(`class="demo-banner"`), "default theme has no demo banner");
   check(vaPage.includes(`class="powered">Powered by Van Ameyde<`), "default theme footer says Powered by Van Ameyde");
-  const nlPage = await (await get(url("Sticker NL-DMO-01"))).text();
-  check(nlPage.includes(`class="demo-banner" role="note">Demo environment, fictional data<`), "Northline shows the demo banner");
-  check(nlPage.includes(`class="powered">Powered by Van Ameyde<`), "Northline footer says Powered by Van Ameyde");
-  check(nlPage.includes(`/api/theme/logo/${northline}`), "Northline uses its published logo");
-  r = await get(`/api/theme/logo/${northline}`);
+  const nlPage = await (await get(url("Station card TEST-01"))).text();
+  check(nlPage.includes(`class="demo-banner" role="note">Demo environment, fictional data<`), "a partner theme shows the demo banner");
+  check(nlPage.includes(`class="powered">Powered by Van Ameyde<`), "partner footer says Powered by Van Ameyde");
+  check(nlPage.includes(`/api/theme/logo/${brand}`), "a partner theme uses its published logo");
+  r = await get(`/api/theme/logo/${brand}`);
+  const logoText = await r.text();
   check(r.status === 200 && /sandbox/.test(r.headers.get("content-security-policy") ?? ""), "published logo is served with a sandbox policy");
+  check(!/<svg[^>]*\swidth=/.test(logoText), "fixed SVG width and height are removed so the logo keeps its proportions");
 
   // With login
   r = await get("/api/admin/login", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "Test Admin", password: "wrong" }) });
@@ -71,6 +82,7 @@ try {
   check(r.status === 422 && (await r.json()).error === "permission_required", "logo without the permission tick is refused");
 } finally {
   await db.query(`delete from public.tenant_themes where tenant_id = $1`, [T1]);
+  await db.query(`delete from public.tenants where id = $1`, [TB]);
   await db.end();
 }
 console.log(failed ? `${failed} FAILED` : "PASS");

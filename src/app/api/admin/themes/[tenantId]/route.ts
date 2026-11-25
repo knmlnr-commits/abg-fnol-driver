@@ -20,7 +20,9 @@ export const PUT = handle(async (req) => {
   const tenant = await q1(`select id from public.tenants where id = $1`, [tenantId]);
   if (!tenant) throw new HttpError(404, "not_found");
 
-  const body = (await readJson(req, 400 * 1024)) as { theme?: unknown; logo?: { mime?: unknown; base64?: unknown } | null; permission?: unknown };
+  const body = (await readJson(req, 400 * 1024)) as { theme?: unknown; tenantName?: unknown; logo?: { mime?: unknown; base64?: unknown } | null; permission?: unknown };
+  const tenantName = typeof body.tenantName === "string" ? body.tenantName.trim() : undefined;
+  if (tenantName !== undefined && (tenantName.length < 1 || tenantName.length > 80)) throw new HttpError(422, "invalid_input");
   const parsed = ThemeInputSchema.safeParse(body.theme);
   if (!parsed.success) throw new HttpError(422, "invalid_input");
   const theme = parsed.data;
@@ -66,9 +68,10 @@ export const PUT = handle(async (req) => {
         updated_at = now() ${logo !== undefined ? ", logo = excluded.logo, logo_mime = excluded.logo_mime" : ""}`,
     [tenantId, ...cols, ...(logo !== undefined ? [logo, logoMime] : [])],
   );
+  if (tenantName !== undefined) await q(`update public.tenants set name = $2 where id = $1`, [tenantId, tenantName]);
   await q(
     `insert into public.audit_log (tenant_id, actor_type, actor_id, action, entity, entity_id, detail) values ($1, 'handler', $2, 'theme_save', 'tenant_theme', $1, $3)`,
-    [tenantId, admin.name, JSON.stringify({ published: permission, logo: willHaveLogo, permissionBy: permission ? admin.name : null })],
+    [tenantId, admin.name, JSON.stringify({ published: permission, logo: willHaveLogo, permissionBy: permission ? admin.name : null, tenantName: tenantName ?? null })],
   );
   return json({ ok: true, published: permission });
 });

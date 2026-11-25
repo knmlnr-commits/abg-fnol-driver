@@ -43,6 +43,7 @@ export function ThemeEditor({ tenant, initial, permission }: {
     contactEmail: initial.contactEmail ?? "",
     footerText: initial.footerText ?? "",
   }));
+  const [tenantName, setTenantName] = useState(tenant.name);
   const [logo, setLogo] = useState<Logo>(undefined);
   const [confirmed, setConfirmed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -77,7 +78,7 @@ export function ThemeEditor({ tenant, initial, permission }: {
     const res = await fetch(`/api/admin/themes/${tenant.id}`, {
       method: "PUT",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ theme: input, permission: confirmed, ...(logo === undefined ? {} : { logo: logo && { mime: logo.mime, base64: logo.base64 } }) }),
+      body: JSON.stringify({ theme: input, tenantName, permission: confirmed, ...(logo === undefined ? {} : { logo: logo && { mime: logo.mime, base64: logo.base64 } }) }),
     });
     const d = await res.json().catch(() => ({}));
     setBusy(false);
@@ -89,12 +90,16 @@ export function ThemeEditor({ tenant, initial, permission }: {
     }
   }
 
-  const canSave = valid.success && report?.ok && (!hasLogo || confirmed) && !busy;
+  const canSave = valid.success && report?.ok && (!hasLogo || confirmed) && tenantName.trim().length > 0 && !busy;
 
   return (
     <div className="editor">
       <section className="stack">
-        <h1>{t("edit_title", { name: tenant.name })}</h1>
+        <h1>{t("edit_title", { name: tenantName || tenant.name })}</h1>
+        <div className="field">
+          <label htmlFor="tn">{t("fields.tenantName")}</label>
+          <input id="tn" className="input" value={tenantName} maxLength={80} onChange={(e) => { setMessage(null); setTenantName(e.target.value); }} />
+        </div>
         <div className="field">
           <label htmlFor="dn">{t("fields.displayName")}</label>
           <input id="dn" className="input" value={input.displayName} maxLength={60} onChange={(e) => set("displayName", e.target.value)} />

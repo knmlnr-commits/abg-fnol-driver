@@ -1,7 +1,6 @@
 {
   "app": {
     "title": "Report damage",
-    "partner": "Rental partner",
     "language": "Language",
     "prototype": "Prototype with test data"
   },
@@ -45,7 +44,7 @@
     "vehicle": "Vehicle",
     "agreement": "Rental agreement",
     "privacy_title": "Your privacy",
-    "privacy_text": "We use your answers, photos and location only to handle this damage. The rental partner and its claims handler receive them. We keep them for {days} days after you send the report, unless the claim needs longer.",
+    "privacy_text": "We use your answers, photos and location only to handle this damage. The rental company and its claims partner receive them. We keep them for {days} days after you send the report, unless the claim needs longer.",
     "privacy_more": "Read the full privacy notice",
     "consent_privacy": "I have read the privacy notice",
     "consent_location": "Use my location for the place of the incident and the photos",
@@ -489,7 +488,9 @@
     },
     "disabled": "The demo page is switched off.",
     "switch": "Show the demo as",
-    "switch_note": "Changes this page right away. A scanned QR code always shows the theme of its own rental partner."
+    "switch_note": "Changes this page right away. A scanned QR code always shows the theme of its own rental company.",
+    "role_default": "Claims and recovery partner",
+    "role_tenant": "Rental company"
   },
   "shell": {
     "banner": "Demo environment, fictional data",
@@ -501,7 +502,7 @@
   "admin": {
     "title": "Admin",
     "themes_title": "Tenant themes",
-    "themes_intro": "Each rental partner can have its own look. A theme is public only when the brand use is confirmed.",
+    "themes_intro": "Each rental company can have its own look. A theme is public only when the brand use is confirmed.",
     "signed_in_as": "Signed in as {name}",
     "logout": "Sign out",
     "login_title": "Sign in",
@@ -528,7 +529,8 @@
       "contactPhone": "Contact phone",
       "contactEmail": "Contact email",
       "footerText": "Footer text",
-      "logo": "Logo"
+      "logo": "Logo",
+      "tenantName": "Name of the rental company"
     },
     "fonts": {
       "georgia_verdana": "Georgia and Verdana",

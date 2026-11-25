@@ -6,7 +6,7 @@ purpose-built intake delivers a complete incident file at the source: fewer miss
 less chasing, and structured data instead of free text.
 
 Prototype with **fictional data only**. No real drivers, rentals, claims, customer names or logos.
-The rental company is shown as "Rental partner".
+The seeded rental company is called "Demo rental company". Van Ameyde is the claims and recovery partner; its look is the default theme.
 
 ## Status
 
@@ -46,7 +46,7 @@ variables by `TenantShell`. Components and `globals.css` carry no brand values.
 |---|---|
 | The tenant in the signed token decides the theme (QR code, personal link, document request link). Anything invalid falls back to the default. | `src/lib/theme/resolve.ts`, tested in `tests/unit/theme-resolve.test.ts` |
 | Default theme: Van Ameyde, Navy, Turquoise, Misty Rose, white, Georgia and Verdana. | `src/lib/theme/defaults.ts`, seed |
-| Demo tenant: Northline Rental, a fictional brand with an original wordmark (`supabase/northline-logo.svg`). | seed |
+| Other tenant themes are added in the admin; the seed contains no third party brands. | seed |
 | Every theme other than the default shows "Demo environment, fictional data". The footer always says "Powered by Van Ameyde". | `src/components/TenantShell.tsx` |
 | WCAG 2.1 AA contrast check; a failing theme can not be saved. Accent colours are decoration only and never the only signal. | `src/lib/theme/contrast.ts`, tested in `tests/unit/contrast.test.ts` |
 | A logo can only be saved with the written permission tick; name and date are stored (also enforced by a database constraint). | `PUT /api/admin/themes/[tenantId]`, `20261124000200_tenant_themes.sql` |
@@ -151,7 +151,7 @@ The RLS test creates and drops its own database `fnol_rls_test`.
 
 | Table | Purpose |
 |---|---|
-| `tenants` | Rental partner; `retention_days` per tenant |
+| `tenants` | Rental companies; `retention_days` per tenant |
 | `stations`, `vehicles` | Fictional master data |
 | `entry_tokens` | One row per printed QR code (station card, vehicle sticker, rental agreement); revoke to disable a print |
 | `incidents` | One notification: reference, status, the validated draft as JSON, completeness now and at first submission, retention date |

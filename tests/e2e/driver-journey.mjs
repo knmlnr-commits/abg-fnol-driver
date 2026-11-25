@@ -44,7 +44,7 @@ async function photo(label, color) {
 // 1. Scan: open a vehicle sticker QR from the demo page.
 await page.goto(`${BASE}/demo`);
 // The demo page opens on the first partner theme; pick the tenant that owns the QR code.
-await page.getByRole("button", { name: /Rental partner/ }).click();
+await page.getByRole("button", { name: /Van Ameyde/ }).click();
 const qrUrl = await page.locator("section.card", { hasText: "HH-VA 101" }).first().locator("a").getAttribute("href");
 const driverStart = Date.now();
 await page.goto(qrUrl);

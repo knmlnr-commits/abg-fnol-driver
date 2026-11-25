@@ -1,7 +1,6 @@
 {
   "app": {
     "title": "Schaden melden",
-    "partner": "Vermietpartner",
     "language": "Sprache",
     "prototype": "Prototyp mit Testdaten"
   },
@@ -45,7 +44,7 @@
     "vehicle": "Fahrzeug",
     "agreement": "Mietvertrag",
     "privacy_title": "Ihr Datenschutz",
-    "privacy_text": "Wir nutzen Ihre Antworten, Fotos und Ihren Standort nur für die Bearbeitung dieses Schadens. Der Vermietpartner und sein Schadenbearbeiter erhalten sie. Wir speichern sie {days} Tage nach dem Senden, außer der Schaden erfordert länger.",
+    "privacy_text": "Wir nutzen Ihre Antworten, Fotos und Ihren Standort nur für die Bearbeitung dieses Schadens. Die Autovermietung und ihr Schadenpartner erhalten sie. Wir speichern sie {days} Tage nach dem Senden, außer der Schaden erfordert länger.",
     "privacy_more": "Vollständigen Datenschutzhinweis lesen",
     "consent_privacy": "Ich habe den Datenschutzhinweis gelesen",
     "consent_location": "Meinen Standort für den Unfallort und die Fotos verwenden",
@@ -489,7 +488,9 @@
     },
     "disabled": "Die Demoseite ist ausgeschaltet.",
     "switch": "Demo anzeigen als",
-    "switch_note": "Ändert diese Seite sofort. Ein gescannter QR-Code zeigt immer das Design seines eigenen Vermietpartners."
+    "switch_note": "Ändert diese Seite sofort. Ein gescannter QR-Code zeigt immer das Design seiner eigenen Autovermietung.",
+    "role_default": "Schaden- und Regresspartner",
+    "role_tenant": "Autovermietung"
   },
   "shell": {
     "banner": "Demo-Umgebung, fiktive Daten",
@@ -501,7 +502,7 @@
   "admin": {
     "title": "Admin",
     "themes_title": "Designs der Mandanten",
-    "themes_intro": "Jeder Vermietpartner kann ein eigenes Design haben. Ein Design ist erst öffentlich, wenn die Markennutzung bestätigt ist.",
+    "themes_intro": "Jede Autovermietung kann ein eigenes Design haben. Ein Design ist erst öffentlich, wenn die Markennutzung bestätigt ist.",
     "signed_in_as": "Angemeldet als {name}",
     "logout": "Abmelden",
     "login_title": "Anmelden",
@@ -528,7 +529,8 @@
       "contactPhone": "Kontakttelefon",
       "contactEmail": "Kontakt-E-Mail",
       "footerText": "Fußzeilentext",
-      "logo": "Logo"
+      "logo": "Logo",
+      "tenantName": "Name der Autovermietung"
     },
     "fonts": {
       "georgia_verdana": "Georgia und Verdana",

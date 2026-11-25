@@ -31,7 +31,7 @@ export function DemoSwitcher({ tenants }: { tenants: DemoTenant[] }) {
             {tenants.map((x) => (
               <button key={x.id} type="button" className="choice" aria-pressed={x.id === current.id} onClick={() => setActive(x.id)}>
                 <span>{x.theme.displayName}</span>
-                <small>{x.name}</small>
+                <small>{x.theme.isDefault ? t("role_default") : t("role_tenant")}</small>
               </button>
             ))}
           </div>
