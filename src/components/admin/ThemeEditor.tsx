@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { checkTheme } from "@/lib/theme/contrast";
-import { checkLogo } from "@/lib/theme/logo";
+import { checkLogo, normalizeSvg } from "@/lib/theme/logo";
 import { FONT_PAIR_IDS, ThemeInputSchema, type FontPair, type PublicTheme, type ThemeInput } from "@/lib/theme/model";
 import { TenantShell } from "../TenantShell";
 import { ThemeSample } from "./ThemeSample";
@@ -66,7 +66,8 @@ export function ThemeEditor({ tenant, initial, permission }: {
       setMessage({ kind: "error", text: t(`errors.${c.code}`) });
       return;
     }
-    setLogo({ mime: c.mime, base64: toBase64(bytes.buffer), previewUrl: URL.createObjectURL(new Blob([bytes], { type: c.mime })) });
+    const preview = c.mime === "image/svg+xml" ? normalizeSvg(new TextDecoder().decode(bytes)) : bytes;
+    setLogo({ mime: c.mime, base64: toBase64(bytes.buffer), previewUrl: URL.createObjectURL(new Blob([preview], { type: c.mime })) });
     setConfirmed(false);
   }
 

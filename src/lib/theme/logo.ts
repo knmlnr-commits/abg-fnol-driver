@@ -26,6 +26,17 @@ export function checkLogo(bytes: Uint8Array, declared: string): LogoCheck {
   return { ok: false, code: "logo_type" };
 }
 
+/**
+ * Many exported SVGs declare a fixed width and height (for example 1200 by 800) that differ from
+ * the proportions of the drawing (the viewBox). Browsers then fit a wide logo into that box and it
+ * shows tiny. Dropping width and height from the root element lets the viewBox decide.
+ */
+export function normalizeSvg(svg: string): string {
+  return svg.replace(/<svg\b[^>]*>/i, (tag) =>
+    /\bviewBox\s*=/i.test(tag) ? tag.replace(/\s(width|height)\s*=\s*("[^"]*"|'[^']*')/gi, "") : tag,
+  );
+}
+
 /** Headers for serving a logo: image only, nothing in it can run. */
 export const LOGO_HEADERS = {
   "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",

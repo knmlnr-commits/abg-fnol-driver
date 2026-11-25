@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { checkLogo, MAX_LOGO_BYTES } from "@/lib/theme/logo";
+import { checkLogo, MAX_LOGO_BYTES, normalizeSvg } from "@/lib/theme/logo";
 
 const enc = (s: string) => new TextEncoder().encode(s);
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 13]);
@@ -29,6 +29,18 @@ describe("logo upload check", () => {
     expect(checkLogo(enc("not a png"), "image/png")).toEqual({ ok: false, code: "logo_type" });
     expect(checkLogo(PNG, "image/gif")).toEqual({ ok: false, code: "logo_type" });
     expect(checkLogo(new Uint8Array(MAX_LOGO_BYTES + 1), "image/png")).toEqual({ ok: false, code: "logo_too_large" });
+  });
+});
+
+describe("svg normalising", () => {
+  it("drops a fixed width and height so the viewBox decides the proportions", () => {
+    const out = normalizeSvg('<svg xmlns="http://www.w3.org/2000/svg" height="800" width="1200" viewBox="0 0 100 16"><path width="5"/></svg>');
+    expect(out).toBe('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 16"><path width="5"/></svg>');
+  });
+
+  it("keeps width and height when there is no viewBox", () => {
+    const svg = '<svg width="120" height="40"><path/></svg>';
+    expect(normalizeSvg(svg)).toBe(svg);
   });
 });
 
