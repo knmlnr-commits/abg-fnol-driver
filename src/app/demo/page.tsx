@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { DemoSwitcher, type DemoTenant } from "@/components/DemoSwitcher";
 import { TenantShell } from "@/components/TenantShell";
 import { flags } from "@/lib/config/flags";
+import type { EntryKind } from "@/lib/domain/constants";
 import { q } from "@/lib/server/db";
 import { signEntryToken } from "@/lib/server/intake";
 import { defaultTheme, demoTenants } from "@/lib/server/themes";
@@ -22,9 +23,10 @@ export default async function DemoPage() {
   }
   const h = await headers();
   const origin = `${h.get("x-forwarded-proto") ?? "https"}://${h.get("host")}`;
-  const rows = await q<{ id: string; tenant_id: string; kind: "station" | "vehicle" | "agreement"; label: string; city: string }>(
-    `select e.id, e.tenant_id, e.kind, e.label, s.city from public.entry_tokens e join public.stations s on s.id = e.station_id
-      where e.revoked_at is null order by s.city, e.kind`,
+  const rows = await q<{ id: string; tenant_id: string; kind: EntryKind; label: string; city: string | null }>(
+    `select e.id, e.tenant_id, e.kind, e.label, s.city from public.entry_tokens e left join public.stations s on s.id = e.station_id
+      where e.revoked_at is null
+      order by array_position(array['agreement', 'vehicle', 'station', 'email'], e.kind), s.city`,
   );
   const cards = await Promise.all(
     rows.map(async (r) => {

@@ -52,6 +52,12 @@ export const GLASS_PARTS = ["windscreen", "side_window", "rear_window", "sunroof
 export const GLASS_DAMAGE = ["chip", "crack"] as const;
 export const IRF_STATUS = ["completed", "not_completed", "no_form"] as const;
 
+/** The four routes into the report, from most to least known. */
+export const ENTRY_KINDS = ["agreement", "vehicle", "station", "email"] as const;
+export type EntryKind = (typeof ENTRY_KINDS)[number];
+/** Value a driver picks when they do not know the rental station. */
+export const STATION_UNKNOWN = "UNKNOWN";
+
 export const SUPPORTED_LOCALES = ["en", "de", "es", "it", "fr", "pt"] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 /** Locales with complete translations; the others fall back to English. */

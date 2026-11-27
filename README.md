@@ -37,6 +37,23 @@ is two photos.
 | Confirmation | Reference number (`FN-2026-000123`), summary, next steps, personal link to add documents later. |
 | Document request link | Same capture component, limited to the requested items (`/d/<token>`). The handler action that creates it comes in phase 2; the server function exists (`createDocumentRequest`). |
 
+## Four routes into the report
+
+Every link carries a signed token. What the token knows decides what the driver is asked.
+
+| Route | Known from the link | Driver is asked for |
+|---|---|---|
+| 1. QR code on the rental agreement (`agreement`) | rental company, station, car, agreement | confirm only |
+| 2. QR code in the car (`vehicle`) | rental company, station, car | rental agreement number |
+| 3. QR code at the station (`station`) | rental company, station | car (plate) and agreement |
+| 4. Link underneath a rental email (`email`) | rental company only (for the theme) | station, car and agreement |
+
+- The email link adds one question, "Where did you rent the car?", with the rental company's own stations and "I don't know". The station is a recommended item in the completeness check for this route only.
+- When the driver types a plate that the rental company knows, the report is linked to that car, and to its station if none is known yet.
+- Each report stores its route (`incidents.entry_kind`), so completion rate and completeness can be compared per channel.
+- The database enforces the shape of each route: an email link has no station, car or agreement; every QR code names a station.
+- Without a known country, the emergency number shown is 112. [CONFIRM] for Australia.
+
 ## White label theming
 
 Every colour, font, logo and brand text comes from the tenant theme (`src/lib/theme`), applied as CSS
@@ -153,7 +170,7 @@ The RLS test creates and drops its own database `fnol_rls_test`.
 |---|---|
 | `tenants` | Rental companies; `retention_days` per tenant |
 | `stations`, `vehicles` | Fictional master data |
-| `entry_tokens` | One row per printed QR code (station card, vehicle sticker, rental agreement); revoke to disable a print |
+| `entry_tokens` | One row per entry link: QR on the agreement, QR in the car, QR at the station, link in emails; revoke to disable it |
 | `incidents` | One notification: reference, status, the validated draft as JSON, completeness now and at first submission, retention date |
 | `evidence_items` | Photos and documents: slot, storage path, type, size, time and place (with consent), source |
 | `access_links` | Personal and document request links (hash only), expiry, revocation |

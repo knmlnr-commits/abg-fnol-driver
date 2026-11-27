@@ -169,3 +169,4 @@ textarea.input { min-height: 140px; resize: vertical; }
 .contrast .pass { font-weight: 700; }
 .contrast .fail { font-weight: 700; color: var(--danger); }
 .field .filebtns label { display: inline-flex; margin: 0; }
+.email-sample { border: 1px dashed var(--line); border-radius: var(--radius); padding: 14px; background: var(--surface); }

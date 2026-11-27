@@ -22,8 +22,8 @@ export type EntryClaims = {
   typ: "entry";
   jti: string; // entry_tokens.id
   ten: string; // tenant id
-  stn: string; // station code
-  ctry: string; // ISO country
+  stn?: string; // station code, absent for the email link
+  ctry?: string; // ISO country, absent for the email link
   veh?: string; // vehicle plate
   agr?: string; // rental agreement number
 };

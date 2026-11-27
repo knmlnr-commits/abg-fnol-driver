@@ -50,7 +50,8 @@
     "consent_location": "Use my location for the place of the incident and the photos",
     "start": "Start",
     "resume_hint": "You can stop at any time. Open the same link to continue.",
-    "safety_first": "Is anyone hurt? Call {number} first."
+    "safety_first": "Is anyone hurt? Call {number} first.",
+    "known_none": "Nothing yet. We ask for your rental details in the next steps."
   },
   "privacy": {
     "title": "Privacy notice",
@@ -75,7 +76,9 @@
       "plate": "License plate",
       "agreement": "Rental agreement number",
       "agreement_help": "On your rental agreement or in the confirmation email.",
-      "confirm": "Yes, this is correct"
+      "confirm": "Yes, this is correct",
+      "title_unknown": "Which car did you rent?",
+      "help_unknown": "The plate is on the car, the key ring or your rental agreement."
     },
     "contact": {
       "title": "How can we reach you?",
@@ -297,6 +300,11 @@
       "submit_anyway": "Send with gaps",
       "gaps_note": "You can send now and add the rest later with your personal link.",
       "summary": "Your answers"
+    },
+    "station": {
+      "title": "Where did you rent the car?",
+      "help": "Pick the station where you collected the car.",
+      "unknown": "I don't know"
     }
   },
   "missing": {
@@ -447,6 +455,10 @@
     "photo_glass_closeup": {
       "label": "Close up of the glass",
       "why": "Decides repair or replacement."
+    },
+    "station": {
+      "label": "Rental station",
+      "why": "The station handles the repair and a replacement car."
     }
   },
   "done": {
@@ -482,15 +494,25 @@
     "intro": "Fictional stations and vehicles. Scan with a phone or tap Open.",
     "open": "Open",
     "kinds": {
-      "station": "Station card",
-      "vehicle": "Vehicle sticker",
-      "agreement": "Rental agreement"
+      "agreement": "QR code on the rental agreement",
+      "vehicle": "QR code in the car",
+      "station": "QR code at the station",
+      "email": "Link in an email"
     },
     "disabled": "The demo page is switched off.",
     "switch": "Show the demo as",
     "switch_note": "Changes this page right away. A scanned QR code always shows the theme of its own rental company.",
     "role_default": "Claims and recovery partner",
-    "role_tenant": "Rental company"
+    "role_tenant": "Rental company",
+    "hints": {
+      "agreement": "Everything is known: station, car and agreement.",
+      "vehicle": "Station and car are known. The driver adds the agreement number.",
+      "station": "Only the station is known. The driver adds car and agreement.",
+      "email": "Nothing is known except the rental company. The driver adds station, car and agreement."
+    },
+    "email_sample": "Damage to your rental car? Report it online in a few minutes.",
+    "email_button": "Report damage",
+    "email_note": "Example of the link at the bottom of a rental email."
   },
   "shell": {
     "banner": "Demo environment, fictional data",

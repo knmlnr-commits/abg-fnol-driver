@@ -1,13 +1,19 @@
 "use client";
 import type { Draft } from "@/lib/domain/schema";
 import type { EvidenceRequirement } from "@/lib/domain/evidence";
-import type { EvidenceSlot } from "@/lib/domain/constants";
+import type { EntryKind, EvidenceSlot } from "@/lib/domain/constants";
+import type { FlowContext } from "@/lib/domain/branching";
 
 export type MissingItem = { key: string; level: "required" | "recommended"; step: string };
 export type CompletenessView = { score: number; missing: MissingItem[] };
 export type EvidenceView = { id: string; slot: EvidenceSlot; mime: string; url: string | null; createdAt: string };
 export type IncidentView = {
   mode: "incident" | "docreq";
+  /** Which of the four links the driver came in through. */
+  entryKind: EntryKind | null;
+  flow: FlowContext;
+  /** The rental company's stations, only when the link did not say which (email link). */
+  stations: { code: string; name: string; city: string }[];
   reference: string;
   status: "draft" | "submitted";
   step: string | null;

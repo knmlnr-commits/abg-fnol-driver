@@ -146,6 +146,20 @@ describe.skipIf(!ADMIN_URL)("row level security", () => {
     expect(rows.map((r) => r.user_id)).toEqual([H1]);
   });
 
+  it("keeps the four entry routes consistent", async () => {
+    const st = "00000000-0000-4000-8000-000000000101";
+    const veh = "00000000-0000-4000-8000-000000000201";
+    // Email link: no station, no car, no agreement.
+    await expect(db.query(`insert into public.entry_tokens (tenant_id, kind, station_id) values ('${T1}', 'email', '${st}')`)).rejects.toThrow(/check constraint/);
+    await expect(db.query(`insert into public.entry_tokens (tenant_id, kind, rental_agreement) values ('${T1}', 'email', 'RA-1')`)).rejects.toThrow(/check constraint/);
+    // QR codes always name a station; the car sticker also a car; the agreement also the agreement.
+    await expect(db.query(`insert into public.entry_tokens (tenant_id, kind) values ('${T1}', 'station')`)).rejects.toThrow(/check constraint/);
+    await expect(db.query(`insert into public.entry_tokens (tenant_id, kind, station_id) values ('${T1}', 'vehicle', '${st}')`)).rejects.toThrow(/check constraint/);
+    await expect(db.query(`insert into public.entry_tokens (tenant_id, kind, station_id, vehicle_id) values ('${T1}', 'agreement', '${st}', '${veh}')`)).rejects.toThrow(/check constraint/);
+    const ok = await db.query(`select kind from public.entry_tokens where tenant_id = '${T1}' order by kind`);
+    expect(new Set(ok.rows.map((r) => r.kind))).toEqual(new Set(["agreement", "vehicle", "station", "email"]));
+  });
+
   it("keeps tenant themes server only", async () => {
     await denied("anon", null, "select * from public.tenant_themes");
     await denied("authenticated", A1, "select * from public.tenant_themes");

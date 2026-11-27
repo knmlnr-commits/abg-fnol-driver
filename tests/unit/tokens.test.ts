@@ -28,6 +28,14 @@ describe("token validation", () => {
     expect(c).toMatchObject(entry);
   });
 
+  it("accepts an email link token that names only the rental company", async () => {
+    const t = await signToken({ typ: "entry", jti: "e-9", ten: "t-1" }, ring);
+    const c = await verifyToken(t, "entry", ring);
+    expect(c).toMatchObject({ jti: "e-9", ten: "t-1" });
+    expect(c.stn).toBeUndefined();
+    expect(c.veh).toBeUndefined();
+  });
+
   it("verifies tokens signed with an older key after rotation", async () => {
     const t = await signToken(entry, ring);
     await expect(verifyToken(t, "entry", ring2)).resolves.toMatchObject({ jti: "e-1" });

@@ -54,6 +54,14 @@ describe("completeness score", () => {
     expect(c.missing).toEqual([]);
   });
 
+  it("asks for the rental station only on the email link, and counts I don't know as missing", () => {
+    expect(completeness(fullCollision, allPhotos).items.find((i) => i.key === "station")).toBeUndefined();
+    const ask = { askStation: true };
+    expect(completeness(fullCollision, allPhotos, ask).missing.map((m) => [m.key, m.level])).toEqual([["station", "recommended"]]);
+    expect(completeness({ ...fullCollision, vehicle: { ...fullCollision.vehicle, stationCode: "UNKNOWN" } }, allPhotos, ask).missing.map((m) => m.key)).toEqual(["station"]);
+    expect(completeness({ ...fullCollision, vehicle: { ...fullCollision.vehicle, stationCode: "DE-HAM-AP" } }, allPhotos, ask).missing).toEqual([]);
+  });
+
   it("does not ask for damage zones after a whole vehicle theft", () => {
     const c = completeness(
       { incidentType: "theft_breakin", details: { theftKind: "whole_vehicle", keysPresent: "yes" } },

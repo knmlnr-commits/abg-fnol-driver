@@ -50,7 +50,8 @@
     "consent_location": "Meinen Standort für den Unfallort und die Fotos verwenden",
     "start": "Starten",
     "resume_hint": "Sie können jederzeit aufhören. Öffnen Sie denselben Link, um weiterzumachen.",
-    "safety_first": "Ist jemand verletzt? Rufen Sie zuerst {number} an."
+    "safety_first": "Ist jemand verletzt? Rufen Sie zuerst {number} an.",
+    "known_none": "Noch nichts. Wir fragen in den nächsten Schritten nach Ihrer Anmietung."
   },
   "privacy": {
     "title": "Datenschutzhinweis",
@@ -75,7 +76,9 @@
       "plate": "Kennzeichen",
       "agreement": "Mietvertragsnummer",
       "agreement_help": "Auf Ihrem Mietvertrag oder in der Bestätigungs-E-Mail.",
-      "confirm": "Ja, das stimmt"
+      "confirm": "Ja, das stimmt",
+      "title_unknown": "Welches Auto haben Sie gemietet?",
+      "help_unknown": "Das Kennzeichen steht am Auto, am Schlüsselanhänger oder auf dem Mietvertrag."
     },
     "contact": {
       "title": "Wie erreichen wir Sie?",
@@ -297,6 +300,11 @@
       "submit_anyway": "Mit Lücken senden",
       "gaps_note": "Sie können jetzt senden und den Rest später mit Ihrem persönlichen Link ergänzen.",
       "summary": "Ihre Antworten"
+    },
+    "station": {
+      "title": "Wo haben Sie das Auto gemietet?",
+      "help": "Wählen Sie die Station, an der Sie das Auto abgeholt haben.",
+      "unknown": "Weiß ich nicht"
     }
   },
   "missing": {
@@ -447,6 +455,10 @@
     "photo_glass_closeup": {
       "label": "Nahaufnahme des Glases",
       "why": "Entscheidet Reparatur oder Austausch."
+    },
+    "station": {
+      "label": "Mietstation",
+      "why": "Die Station kümmert sich um Reparatur und Ersatzwagen."
     }
   },
   "done": {
@@ -482,15 +494,25 @@
     "intro": "Erfundene Stationen und Fahrzeuge. Mit dem Handy scannen oder auf Öffnen tippen.",
     "open": "Öffnen",
     "kinds": {
-      "station": "Stationskarte",
-      "vehicle": "Fahrzeugaufkleber",
-      "agreement": "Mietvertrag"
+      "agreement": "QR-Code auf dem Mietvertrag",
+      "vehicle": "QR-Code im Auto",
+      "station": "QR-Code an der Station",
+      "email": "Link in einer E-Mail"
     },
     "disabled": "Die Demoseite ist ausgeschaltet.",
     "switch": "Demo anzeigen als",
     "switch_note": "Ändert diese Seite sofort. Ein gescannter QR-Code zeigt immer das Design seiner eigenen Autovermietung.",
     "role_default": "Schaden- und Regresspartner",
-    "role_tenant": "Autovermietung"
+    "role_tenant": "Autovermietung",
+    "hints": {
+      "agreement": "Alles ist bekannt: Station, Auto und Vertrag.",
+      "vehicle": "Station und Auto sind bekannt. Der Fahrer ergänzt die Vertragsnummer.",
+      "station": "Nur die Station ist bekannt. Der Fahrer ergänzt Auto und Vertrag.",
+      "email": "Nur die Autovermietung ist bekannt. Der Fahrer ergänzt Station, Auto und Vertrag."
+    },
+    "email_sample": "Schaden am Mietwagen? Melden Sie ihn in wenigen Minuten online.",
+    "email_button": "Schaden melden",
+    "email_note": "Beispiel für den Link am Ende einer E-Mail der Autovermietung."
   },
   "shell": {
     "banner": "Demo-Umgebung, fiktive Daten",

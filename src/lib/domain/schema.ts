@@ -55,6 +55,8 @@ export const VehicleSchema = z
       .optional()
       .meta(p("Links the incident to the rental and the driver; replaces asking for the driver's name.")),
     confirmed: z.boolean().optional().meta(p("Driver confirmed the prefilled vehicle data.")),
+    stationCode: z.string().trim().max(20).regex(/^[A-Za-z0-9-]*$/, "station_format").optional()
+      .meta(p("Rental station, asked only when the link did not say (email link); routes the claim to the right station.")),
   })
   .strict();
 

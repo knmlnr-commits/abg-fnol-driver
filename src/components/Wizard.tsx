@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { PLATE_COUNTRIES } from "@/lib/config/countries";
 import { resolveStep, stepsFor, type StepId } from "@/lib/domain/branching";
 import {
+  STATION_UNKNOWN,
   COLLISION_KINDS, GLASS_DAMAGE, GLASS_PARTS, HIT_OBJECTS, INCIDENT_TYPES, IRF_STATUS, THEFT_KINDS,
   type DamageZone,
 } from "@/lib/domain/constants";
@@ -20,7 +21,7 @@ const MapPicker = dynamic(() => import("./MapPicker").then((m) => m.MapPicker), 
 
 /** Which part of the draft each step edits; only that part is sent to the server. */
 const STEP_KEYS: Partial<Record<StepId, (keyof Draft)[]>> = {
-  injured: ["safety"], police: ["safety"], police_reference: ["safety"], vehicle: ["vehicle"], contact: ["contact"],
+  injured: ["safety"], police: ["safety"], police_reference: ["safety"], station: ["vehicle"], vehicle: ["vehicle"], contact: ["contact"],
   incident_type: ["incidentType"], when_where: ["occurredAt", "location"], collision_kind: ["details"],
   other_party: ["otherParty"], irf: ["details"], hit_object: ["details"], found_at: ["details"], theft_kind: ["details"],
   theft_items: ["details"], keys: ["details"], glass_part: ["details"], glass_damage: ["details"], drivable: ["details"],
@@ -46,7 +47,8 @@ export function Wizard({ token }: { token: string }) {
   const [offline, setOffline] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
 
-  const steps: StepId[] = useMemo(() => stepsFor(draft).filter((s) => s !== "privacy"), [draft]);
+  const flow = data?.flow;
+  const steps: StepId[] = useMemo(() => stepsFor(draft, flow).filter((s) => s !== "privacy"), [draft, flow]);
   const index = Math.max(0, steps.indexOf(step));
 
   // Load the draft. The phone only remembers the current step, never the answers.
@@ -58,7 +60,7 @@ export function Wizard({ token }: { token: string }) {
         let saved: string | null = null;
         try { saved = localStorage.getItem(stepStoreKey(v.reference)); } catch {}
         const wanted = (saved || v.step || "injured") as StepId;
-        const s = resolveStep(v.draft, wanted === "privacy" ? "injured" : wanted);
+        const s = resolveStep(v.draft, wanted === "privacy" ? "injured" : wanted, v.flow);
         setStep(s === "privacy" ? "injured" : s);
         if (v.status === "draft" && v.step && v.step !== "injured") track(token, "flow_resumed", s);
       })
@@ -118,11 +120,11 @@ export function Wizard({ token }: { token: string }) {
     if (step === "when_where" && !d.occurredAt) d = { ...d, occurredAt: new Date().toISOString() };
     const v = validate(step, d);
     if (v) { setFieldError(v); return; }
-    const list: StepId[] = stepsFor(d).filter((s) => s !== "privacy");
+    const list: StepId[] = stepsFor(d, flow).filter((s) => s !== "privacy");
     const next = list[list.indexOf(step) + 1] ?? null;
     const saved = await save(step, d, next);
     if (saved && next) {
-      const target = resolveStep(saved, next);
+      const target = resolveStep(saved, next, flow);
       setStep(target);
       // Ask the device for the incident place, with consent only.
       if (target === "when_where" && !saved.location && saved.consent?.location) locate();
@@ -211,8 +213,11 @@ export function Wizard({ token }: { token: string }) {
     </div>
   );
 
+  // Did the link already name the car? Then the driver only confirms it.
+  const carKnown = data.entryKind === "agreement" || data.entryKind === "vehicle";
+
   // Steps answered with one tap have no Next button.
-  const autoSteps: StepId[] = ["police", "incident_type", "collision_kind", "irf", "hit_object", "theft_kind", "keys", "glass_part", "glass_damage", "drivable"];
+  const autoSteps: StepId[] = ["police", "station", "incident_type", "collision_kind", "irf", "hit_object", "theft_kind", "keys", "glass_part", "glass_damage", "drivable"];
   const showNext = !autoSteps.includes(step) && !(step === "injured" && draft.safety?.injured !== "yes") && step !== "review";
 
   const body = (() => {
@@ -241,9 +246,29 @@ export function Wizard({ token }: { token: string }) {
       case "police_reference":
         return (<><p className="help">{t("steps.police_reference.help")}</p>
           {text("police-ref", t("steps.police_reference.label"), draft.safety?.policeReference, (v) => update({ safety: { policeReference: v } }), { max: 64 })}</>);
+      case "station":
+        return (
+          <>
+            <p className="help">{t("steps.station.help")}</p>
+            <div className="choices">
+              {data.stations.map((s) => (
+                <button key={s.code} type="button" className="choice" aria-pressed={draft.vehicle?.stationCode === s.code} disabled={busy}
+                  onClick={() => choose({ vehicle: { stationCode: s.code } })}>
+                  <span>{s.city}</span>
+                  <small>{s.name}</small>
+                </button>
+              ))}
+              <button type="button" className="choice" aria-pressed={draft.vehicle?.stationCode === STATION_UNKNOWN} disabled={busy}
+                onClick={() => choose({ vehicle: { stationCode: STATION_UNKNOWN } })}>
+                <span>{t("steps.station.unknown")}</span>
+              </button>
+            </div>
+          </>
+        );
       case "vehicle":
         return (
           <div className="stack">
+            {!carKnown && <p className="help">{t("steps.vehicle.help_unknown")}</p>}
             {text("plate", t("steps.vehicle.plate"), draft.vehicle?.plate, (v) => update({ vehicle: { plate: v.toUpperCase() } }), { max: 16 })}
             {text("agreement", t("steps.vehicle.agreement"), draft.vehicle?.rentalAgreement, (v) => update({ vehicle: { rentalAgreement: v } }), { max: 32, help: t("steps.vehicle.agreement_help") })}
           </div>
@@ -371,7 +396,7 @@ export function Wizard({ token }: { token: string }) {
       }
       case "review":
         return (
-          <Review token={token} view={data} draft={draft} onFix={(s) => setStep(resolveStep(draft, s as StepId))} onBack={goBack}
+          <Review token={token} view={data} draft={draft} onFix={(s) => setStep(resolveStep(draft, s as StepId, flow))} onBack={goBack}
             onSubmitted={(v) => {
               try { localStorage.removeItem(stepStoreKey(data.reference)); } catch {}
               setData(v);
@@ -383,14 +408,14 @@ export function Wizard({ token }: { token: string }) {
   })();
 
   const witnessesInvalid = step === "witnesses" && (draft.witnesses ?? []).some((w) => !w.name.trim() || !w.consentToContact);
-  const nextLabel = step === "vehicle" ? t("steps.vehicle.confirm") : step === "witnesses" && !(draft.witnesses ?? []).length ? t("steps.witnesses.none") : t("common.next");
+  const nextLabel = step === "vehicle" && carKnown ? t("steps.vehicle.confirm") : step === "witnesses" && !(draft.witnesses ?? []).length ? t("steps.witnesses.none") : t("common.next");
 
   return (
     <main className="page">
       <div className="stepcount">{t("common.step", { current: index + 1, total: steps.length })}</div>
       <div className="progress" aria-hidden="true"><span style={{ width: `${((index + 1) / steps.length) * 100}%` }} /></div>
       {offline && <p className="notice" role="status">{t("common.offline")}</p>}
-      <h1 ref={heading} tabIndex={-1}>{t(`steps.${step}.title`)}</h1>
+      <h1 ref={heading} tabIndex={-1}>{step === "vehicle" && !carKnown ? t("steps.vehicle.title_unknown") : t(`steps.${step}.title`)}</h1>
       {body}
       {fieldError && <p className="error" role="alert">{fieldError}</p>}
       {error && <p className="alert" role="alert">{t.has(`errors.${error}`) ? t(`errors.${error}`) : t("errors.server_error")}</p>}

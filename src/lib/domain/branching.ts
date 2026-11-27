@@ -6,6 +6,7 @@ export type StepId =
   | "injured"
   | "police"
   | "police_reference"
+  | "station"
   | "vehicle"
   | "contact"
   | "incident_type"
@@ -27,13 +28,18 @@ export type StepId =
   | "witnesses"
   | "review";
 
+/** What the entry link already told us. Only the email link leaves the station unknown. */
+export type FlowContext = { askStation: boolean };
+const DEFAULT_CTX: FlowContext = { askStation: false };
+
 /**
  * The ordered list of steps for the current answers. Steps that do not apply are left out,
  * so the progress bar and the back button always match what the driver sees.
  */
-export function stepsFor(draft: Draft): StepId[] {
+export function stepsFor(draft: Draft, ctx: FlowContext = DEFAULT_CTX): StepId[] {
   const steps: StepId[] = ["privacy", "injured", "police"];
   if (draft.safety?.policeInvolved === "yes") steps.push("police_reference");
+  if (ctx.askStation) steps.push("station");
   steps.push("vehicle", "contact", "incident_type", "when_where");
 
   const type = draft.incidentType;
@@ -72,21 +78,21 @@ export function isWholeVehicleTheft(draft: Draft): boolean {
   return draft.incidentType === "theft_breakin" && draft.details?.theftKind === "whole_vehicle";
 }
 
-export function nextStep(draft: Draft, current: StepId): StepId | null {
-  const steps = stepsFor(draft);
+export function nextStep(draft: Draft, current: StepId, ctx: FlowContext = DEFAULT_CTX): StepId | null {
+  const steps = stepsFor(draft, ctx);
   const i = steps.indexOf(current);
   return i >= 0 && i < steps.length - 1 ? steps[i + 1] : null;
 }
 
-export function previousStep(draft: Draft, current: StepId): StepId | null {
-  const steps = stepsFor(draft);
+export function previousStep(draft: Draft, current: StepId, ctx: FlowContext = DEFAULT_CTX): StepId | null {
+  const steps = stepsFor(draft, ctx);
   const i = steps.indexOf(current);
   return i > 0 ? steps[i - 1] : null;
 }
 
 /** When answers change the path, a step can disappear. Fall back to the closest valid step. */
-export function resolveStep(draft: Draft, wanted: StepId | null | undefined): StepId {
-  const steps = stepsFor(draft);
+export function resolveStep(draft: Draft, wanted: StepId | null | undefined, ctx: FlowContext = DEFAULT_CTX): StepId {
+  const steps = stepsFor(draft, ctx);
   if (wanted && steps.includes(wanted)) return wanted;
   return steps[0];
 }

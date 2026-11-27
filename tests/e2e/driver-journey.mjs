@@ -11,6 +11,9 @@ import { mkdirSync } from "node:fs";
 const BASE = process.env.BASE_URL ?? "http://localhost:3100";
 const SHOTS = process.env.SHOTS_DIR; // optional: save screenshots per step
 const LOCALE = process.env.LOCALE ?? "de";
+// Which of the four links to start from: agreement, vehicle (default), station or email.
+const ENTRY = process.env.ENTRY ?? "vehicle";
+const ENTRY_LABEL = { agreement: "Rental agreement print", vehicle: "Sticker HH-VA 101", station: "Station card Hamburg", email: "Link in rental emails" }[ENTRY];
 const t0 = Date.now();
 const log = (m) => console.log(`${((Date.now() - t0) / 1000).toFixed(1).padStart(5)}s  ${m}`);
 
@@ -45,10 +48,10 @@ async function photo(label, color) {
 await page.goto(`${BASE}/demo`);
 // The demo page opens on the first partner theme; pick the tenant that owns the QR code.
 await page.getByRole("button", { name: /Van Ameyde/ }).click();
-const qrUrl = await page.locator("section.card", { hasText: "HH-VA 101" }).first().locator("a").getAttribute("href");
+const qrUrl = await page.locator("section.card", { hasText: ENTRY_LABEL }).first().locator("a").getAttribute("href");
 const driverStart = Date.now();
 await page.goto(qrUrl);
-log("QR opened");
+log(`${ENTRY} link opened`);
 await shot("start");
 
 const T = LOCALE === "de"
@@ -75,9 +78,24 @@ await shot("injured");
 await tap(T.no); // injured
 await page.waitForFunction((h) => document.querySelector("h1")?.textContent !== h, await heading());
 await tap(T.no); // police
-await page.getByRole("button", { name: T.confirm }).waitFor();
-await shot("vehicle");
-await tap(T.confirm);
+if (ENTRY === "email") {
+  // Only the rental company is known: pick the station, then type car and agreement.
+  await page.getByRole("button", { name: /Hamburg/ }).waitFor();
+  await shot("station");
+  await page.getByRole("button", { name: /Hamburg/ }).click();
+}
+if (ENTRY === "agreement" || ENTRY === "vehicle") {
+  await page.getByRole("button", { name: T.confirm }).waitFor();
+  await shot("vehicle");
+  if (ENTRY === "vehicle") await page.locator("#agreement").fill("RA-DEMO-100234");
+  await tap(T.confirm);
+} else {
+  await page.locator("#plate").waitFor();
+  await page.locator("#plate").fill("hh-va 102");
+  await page.locator("#agreement").fill("RA-DEMO-200001");
+  await shot("vehicle");
+  await tap(T.next);
+}
 await page.getByLabel("E-Mail").or(page.getByLabel("Email")).fill("driver@example.test");
 await shot("contact");
 await tap(T.next);
@@ -116,7 +134,9 @@ await tap(T.noWitness);
 await page.locator(".score").waitFor();
 await shot("review");
 const missing = await page.locator(".missing li").count();
+const missingText = (await page.locator(".missing").textContent().catch(() => "")) ?? "";
 log(`review shows ${missing} missing item(s)`);
+if (/Mietstation|Rental station/.test(missingText)) throw new Error("station should be known after picking it");
 await tap(T.sendGaps);
 await page.getByText(T.thanks).waitFor();
 const reference = (await page.locator(".ref").textContent())?.trim();

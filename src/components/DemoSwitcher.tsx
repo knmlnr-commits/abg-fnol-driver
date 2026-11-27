@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import type { EntryKind } from "@/lib/domain/constants";
 import type { PublicTheme } from "@/lib/theme/model";
 import { TenantShell } from "./TenantShell";
 
@@ -8,7 +9,7 @@ export type DemoTenant = {
   id: string;
   name: string;
   theme: PublicTheme;
-  cards: { id: string; kind: "station" | "vehicle" | "agreement"; label: string; city: string; url: string; svg: string }[];
+  cards: { id: string; kind: EntryKind; label: string; city: string | null; url: string; svg: string }[];
 };
 
 /**
@@ -39,11 +40,22 @@ export function DemoSwitcher({ tenants }: { tenants: DemoTenant[] }) {
         </section>
         <div className="qrgrid" aria-live="polite">
           {current.cards.map((c) => (
-            <section key={c.id} className="card">
-              <h2 style={{ fontSize: "1rem" }}>{t(`kinds.${c.kind}`)}</h2>
-              <p className="help" style={{ margin: 0 }}>{c.label}, {c.city}</p>
-              <div className="qr" dangerouslySetInnerHTML={{ __html: c.svg }} />
-              <a className="btn btn-secondary btn-block" href={c.url}>{t("open")}</a>
+            <section key={c.id} className="card stack">
+              <h2 style={{ fontSize: "1rem", margin: 0 }}>{t(`kinds.${c.kind}`)}</h2>
+              <p className="help" style={{ margin: 0 }}>{t(`hints.${c.kind}`)}</p>
+              <p className="help" style={{ margin: 0 }}>{c.city ? `${c.label}, ${c.city}` : c.label}</p>
+              {c.kind === "email" ? (
+                <div className="email-sample" role="group" aria-label={t("email_note")}>
+                  <p style={{ margin: "0 0 10px" }}>{t("email_sample")}</p>
+                  <a className="btn btn-primary btn-block" href={c.url}>{t("email_button")}</a>
+                  <p className="help" style={{ margin: "10px 0 0", fontSize: "0.8rem" }}>{t("email_note")}</p>
+                </div>
+              ) : (
+                <>
+                  <div className="qr" dangerouslySetInnerHTML={{ __html: c.svg }} />
+                  <a className="btn btn-secondary btn-block" href={c.url}>{t("open")}</a>
+                </>
+              )}
             </section>
           ))}
         </div>

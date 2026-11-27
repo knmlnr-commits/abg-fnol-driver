@@ -2,7 +2,8 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import type { PoolClient } from "pg";
 import { emergencyNumber } from "@/lib/config/countries";
-import { EVIDENCE_SLOTS, SUPPORTED_LOCALES, type EvidenceSlot, type Locale } from "@/lib/domain/constants";
+import { EVIDENCE_SLOTS, STATION_UNKNOWN, SUPPORTED_LOCALES, type EntryKind, type EvidenceSlot, type Locale } from "@/lib/domain/constants";
+import type { FlowContext } from "@/lib/domain/branching";
 import { completeness, type Completeness } from "@/lib/domain/completeness";
 import { evidenceFor } from "@/lib/domain/evidence";
 import { DraftSchema, mergeDraft, type Draft } from "@/lib/domain/schema";
@@ -34,11 +35,13 @@ const MAX_FILES_PER_INCIDENT = 60;
 
 export type EntryContext = {
   entryId: string;
+  kind: EntryKind;
   tenantId: string;
-  stationId: string;
-  stationName: string;
-  city: string;
-  country: string;
+  /** Null for the email link: the station is asked in the flow. */
+  stationId: string | null;
+  stationName: string | null;
+  city: string | null;
+  country: string | null;
   emergency: string;
   vehicleId: string | null;
   plate: string | null;
@@ -53,12 +56,12 @@ export async function resolveEntry(token: string): Promise<EntryContext> {
     throw new HttpError(e instanceof TokenError && e.code === "expired" ? 410 : 401, "invalid_link");
   }
   const row = await q1<{
-    id: string; tenant_id: string; station_id: string; name: string; city: string; country: string;
+    id: string; kind: EntryKind; tenant_id: string; station_id: string | null; name: string | null; city: string | null; country: string | null;
     vehicle_id: string | null; plate: string | null; rental_agreement: string | null;
   }>(
-    `select e.id, e.tenant_id, e.station_id, s.name, s.city, s.country, e.vehicle_id, v.plate, e.rental_agreement
+    `select e.id, e.kind, e.tenant_id, e.station_id, s.name, s.city, s.country, e.vehicle_id, v.plate, e.rental_agreement
        from public.entry_tokens e
-       join public.stations s on s.id = e.station_id
+       left join public.stations s on s.id = e.station_id
        left join public.vehicles v on v.id = e.vehicle_id
       where e.id = $1 and e.revoked_at is null and e.tenant_id = $2`,
     [claims.jti, claims.ten],
@@ -66,6 +69,7 @@ export async function resolveEntry(token: string): Promise<EntryContext> {
   if (!row) throw new HttpError(410, "invalid_link");
   return {
     entryId: row.id,
+    kind: row.kind,
     tenantId: row.tenant_id,
     stationId: row.station_id,
     stationName: row.name,
@@ -79,9 +83,9 @@ export async function resolveEntry(token: string): Promise<EntryContext> {
 }
 
 export async function signEntryToken(entryId: string): Promise<string> {
-  const row = await q1<{ tenant_id: string; code: string; country: string; plate: string | null; rental_agreement: string | null }>(
+  const row = await q1<{ tenant_id: string; code: string | null; country: string | null; plate: string | null; rental_agreement: string | null }>(
     `select e.tenant_id, s.code, s.country, v.plate, e.rental_agreement
-       from public.entry_tokens e join public.stations s on s.id = e.station_id
+       from public.entry_tokens e left join public.stations s on s.id = e.station_id
        left join public.vehicles v on v.id = e.vehicle_id where e.id = $1`,
     [entryId],
   );
@@ -91,8 +95,8 @@ export async function signEntryToken(entryId: string): Promise<string> {
       typ: "entry",
       jti: entryId,
       ten: row.tenant_id,
-      stn: row.code,
-      ctry: row.country,
+      ...(row.code ? { stn: row.code } : {}),
+      ...(row.country ? { ctry: row.country } : {}),
       ...(row.plate ? { veh: row.plate } : {}),
       ...(row.rental_agreement ? { agr: row.rental_agreement } : {}),
     },
@@ -134,11 +138,11 @@ export async function startIncident(entryToken: string, locale: Locale, location
     });
     const inc = (
       await c.query<{ id: string }>(
-        `insert into public.incidents (tenant_id, reference, entry_token_id, station_id, vehicle_id, locale, draft, current_step, retention_until)
-         select $1, $2, $3, $4, $5, $6, $7, 'injured', now() + make_interval(days => t.retention_days)
+        `insert into public.incidents (tenant_id, reference, entry_token_id, entry_kind, station_id, vehicle_id, locale, draft, current_step, retention_until)
+         select $1, $2, $3, $8, $4, $5, $6, $7, 'injured', now() + make_interval(days => t.retention_days)
            from public.tenants t where t.id = $1
          returning id`,
-        [ctx.tenantId, ref, ctx.entryId, ctx.stationId, ctx.vehicleId, locale, JSON.stringify(draft)],
+        [ctx.tenantId, ref, ctx.entryId, ctx.stationId, ctx.vehicleId, locale, JSON.stringify(draft), ctx.kind],
       )
     ).rows[0];
     const token = await signToken({ typ: "incident", jti, sub: inc.id }, ring(), { ttlSeconds: INCIDENT_TOKEN_TTL_S });
@@ -155,6 +159,7 @@ export async function startIncident(entryToken: string, locale: Locale, location
 type IncidentRow = {
   id: string; tenant_id: string; reference: string; status: "draft" | "submitted"; locale: string;
   current_step: string | null; draft: Draft; station_name: string | null; city: string | null; country: string | null;
+  entry_kind: EntryKind | null; station_id: string | null; vehicle_id: string | null;
   lat: number | null; lng: number | null; submitted_at: string | null; completeness_score: number;
 };
 
@@ -194,6 +199,7 @@ export async function authenticate(token: string): Promise<Auth> {
   }
   const incident = await q1<IncidentRow>(
     `select i.id, i.tenant_id, i.reference, i.status, i.locale, i.current_step, i.draft, s.name as station_name, s.city, s.country, s.lat, s.lng,
+            i.entry_kind, i.station_id, i.vehicle_id,
             i.submitted_at, i.completeness_score
        from public.incidents i left join public.stations s on s.id = i.station_id where i.id = $1`,
     [link.incident_id],
@@ -219,9 +225,14 @@ async function evidenceList(incidentId: string) {
   );
 }
 
-async function recompute(incidentId: string, draft: Draft, c?: PoolClient): Promise<Completeness> {
+/** What the entry link left open. Only the email link leaves the station to the driver. */
+export function flowContext(entryKind: EntryKind | null): FlowContext {
+  return { askStation: entryKind === "email" };
+}
+
+async function recompute(incidentId: string, draft: Draft, ctx: FlowContext, c?: PoolClient): Promise<Completeness> {
   const ev = await evidenceList(incidentId);
-  const comp = completeness(draft, ev.map((e) => e.slot));
+  const comp = completeness(draft, ev.map((e) => e.slot), ctx);
   const sql = `update public.incidents set completeness_score = $2, missing_items = $3, updated_at = now() where id = $1`;
   const params = [incidentId, comp.score, JSON.stringify(comp.missing.map((m) => ({ key: m.key, level: m.level })))];
   if (c) await c.query(sql, params);
@@ -237,9 +248,17 @@ export async function view(auth: Auth) {
   const urls = await Promise.all(
     ev.map((e) => (e.mime.startsWith("image/") ? storage().createReadUrl(e.storage_path, 600).catch(() => null) : null)),
   );
-  const comp = completeness(inc.draft, all.map((e) => e.slot));
+  const ctx = flowContext(inc.entry_kind);
+  const comp = completeness(inc.draft, all.map((e) => e.slot), ctx);
+  // The email link knows no station: offer the rental company's own stations to pick from.
+  const stations = ctx.askStation && auth.mode === "incident"
+    ? await q<{ code: string; name: string; city: string }>(`select code, name, city from public.stations where tenant_id = $1 order by city, name`, [inc.tenant_id])
+    : [];
   return {
     mode: auth.mode,
+    entryKind: inc.entry_kind,
+    flow: ctx,
+    stations,
     reference: inc.reference,
     status: inc.status,
     step: inc.current_step,
@@ -268,12 +287,38 @@ export async function saveDraft(auth: Auth, patch: unknown, step: unknown) {
   const stepOk = typeof step === "string" && /^[a-z_]{1,40}$/.test(step) ? step : null;
   const draft = mergeDraft(auth.incident.draft, parsed.data);
   const locale = draft.locale && (SUPPORTED_LOCALES as readonly string[]).includes(draft.locale) ? draft.locale : auth.incident.locale;
+  const ctx = flowContext(auth.incident.entry_kind);
+
+  // Link the report to the rental company's own data where the driver's answers allow it.
+  let stationId = auth.incident.station_id;
+  let vehicleId = auth.incident.vehicle_id;
+  if (ctx.askStation && parsed.data.vehicle?.stationCode !== undefined) {
+    const code = parsed.data.vehicle.stationCode;
+    if (!code || code === STATION_UNKNOWN) stationId = null;
+    else {
+      const st = await q1<{ id: string }>(`select id from public.stations where tenant_id = $1 and code = $2`, [auth.incident.tenant_id, code]);
+      if (!st) throw new HttpError(422, "invalid_input");
+      stationId = st.id;
+    }
+  }
+  if (!vehicleId && draft.vehicle?.plate) {
+    const v = await q1<{ id: string; station_id: string | null }>(
+      `select id, station_id from public.vehicles
+        where tenant_id = $1 and regexp_replace(upper(plate), '[^A-Z0-9]', '', 'g') = regexp_replace(upper($2), '[^A-Z0-9]', '', 'g')`,
+      [auth.incident.tenant_id, draft.vehicle.plate],
+    );
+    if (v) {
+      vehicleId = v.id;
+      stationId = stationId ?? v.station_id;
+    }
+  }
   await q(
-    `update public.incidents set draft = $2, incident_type = $3, current_step = coalesce($4, current_step), locale = $5, updated_at = now()
+    `update public.incidents set draft = $2, incident_type = $3, current_step = coalesce($4, current_step), locale = $5,
+            station_id = $6, vehicle_id = $7, updated_at = now()
       where id = $1 and status = 'draft'`,
-    [auth.incident.id, JSON.stringify(draft), draft.incidentType ?? null, stepOk, locale],
+    [auth.incident.id, JSON.stringify(draft), draft.incidentType ?? null, stepOk, locale, stationId, vehicleId],
   );
-  const comp = await recompute(auth.incident.id, draft);
+  const comp = await recompute(auth.incident.id, draft, ctx);
   await audit(null, {
     tenantId: auth.incident.tenant_id, actorType: "driver", actorId: auth.linkId, action: "update", entity: "incident",
     entityId: auth.incident.id, detail: { fields: Object.keys(parsed.data) },
@@ -343,14 +388,14 @@ export async function confirmEvidence(
         await c.query(`update public.document_requests set status = 'fulfilled' where id = $1`, [auth.request.id]);
       }
     }
-    const comp = await recomputeTx(c, auth.incident.id, auth.incident.draft);
+    const comp = await recomputeTx(c, auth.incident.id, auth.incident.draft, flowContext(auth.incident.entry_kind));
     return { id, completeness: comp };
   });
 }
 
-async function recomputeTx(c: PoolClient, incidentId: string, draft: Draft) {
+async function recomputeTx(c: PoolClient, incidentId: string, draft: Draft, ctx: FlowContext) {
   const ev = await c.query<{ slot: EvidenceSlot }>(`select slot from public.evidence_items where incident_id = $1`, [incidentId]);
-  const comp = completeness(draft, ev.rows.map((r) => r.slot));
+  const comp = completeness(draft, ev.rows.map((r) => r.slot), ctx);
   await c.query(`update public.incidents set completeness_score = $2, missing_items = $3, updated_at = now() where id = $1`, [
     incidentId, comp.score, JSON.stringify(comp.missing.map((m) => ({ key: m.key, level: m.level }))),
   ]);
@@ -367,7 +412,7 @@ export async function removeEvidence(auth: Auth, id: unknown) {
   if (!row) throw new HttpError(404, "not_found");
   await storage().remove([row.storage_path]);
   await audit(null, { tenantId: auth.incident.tenant_id, actorType: "driver", actorId: auth.linkId, action: "remove_evidence", entity: "evidence_item", entityId: id });
-  return recompute(auth.incident.id, auth.incident.draft);
+  return recompute(auth.incident.id, auth.incident.draft, flowContext(auth.incident.entry_kind));
 }
 
 export async function submit(auth: Auth) {
@@ -375,7 +420,7 @@ export async function submit(auth: Auth) {
   if (auth.incident.status !== "draft") throw new HttpError(409, "already_submitted");
   if (!auth.incident.draft.consent?.privacy) throw new HttpError(422, "consent_missing");
   return tx(async (c) => {
-    const comp = await recomputeTx(c, auth.incident.id, auth.incident.draft);
+    const comp = await recomputeTx(c, auth.incident.id, auth.incident.draft, flowContext(auth.incident.entry_kind));
     const upd = await c.query(
       `update public.incidents i set status = 'submitted', submitted_at = now(), current_step = 'done',
               first_submission_score = $2, first_submission_missing = $3,

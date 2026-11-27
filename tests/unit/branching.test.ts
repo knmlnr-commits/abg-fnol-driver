@@ -47,6 +47,15 @@ describe("branching", () => {
     expect(other).not.toContain("witnesses");
   });
 
+  it("asks for the rental station only when the link did not say (email link)", () => {
+    expect(stepsFor({})).not.toContain("station");
+    const s = stepsFor({}, { askStation: true });
+    expect(s.indexOf("station")).toBe(s.indexOf("vehicle") - 1);
+    expect(nextStep({ safety: { policeInvolved: "no" } }, "police", { askStation: true })).toBe("station");
+    expect(resolveStep({}, "station")).toBe("privacy");
+    expect(resolveStep({}, "station", { askStation: true })).toBe("station");
+  });
+
   it("navigates forward and back on the current path", () => {
     const d = { safety: { policeInvolved: "no" as const } };
     expect(nextStep(d, "police")).toBe("vehicle");

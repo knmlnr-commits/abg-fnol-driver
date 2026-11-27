@@ -30,6 +30,11 @@ insert into public.entry_tokens (id, tenant_id, kind, station_id, vehicle_id, re
   ('00000000-0000-4000-8000-000000000306', '00000000-0000-4000-8000-000000000001', 'vehicle', '00000000-0000-4000-8000-000000000104', '00000000-0000-4000-8000-000000000205', null, 'Sticker 0001 VAX')
 on conflict (id) do nothing;
 
+-- Link underneath the rental company's emails: only the company is known.
+insert into public.entry_tokens (id, tenant_id, kind, station_id, vehicle_id, rental_agreement, label) values
+  ('00000000-0000-4000-8000-000000000307', '00000000-0000-4000-8000-000000000001', 'email', null, null, null, 'Link in rental emails')
+on conflict (id) do nothing;
+
 -- ---------------------------------------------------------------- themes
 -- Van Ameyde default theme. Other tenant themes are added in the admin, with brand permission.
 insert into public.tenant_themes (is_default, display_name, primary_color, accent_color, background_color, text_color, surface_color, font_pair, permission_by, permission_at, updated_by)

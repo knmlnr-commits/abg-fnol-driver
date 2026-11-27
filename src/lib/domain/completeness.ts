@@ -1,5 +1,6 @@
 import type { EvidenceSlot } from "./constants";
-import { isWholeVehicleTheft } from "./branching";
+import { isWholeVehicleTheft, type FlowContext } from "./branching";
+import { STATION_UNKNOWN } from "./constants";
 import { evidenceFor, type Level } from "./evidence";
 import type { Draft } from "./schema";
 
@@ -23,7 +24,7 @@ const WEIGHT: Record<CompletenessItem["level"], number> = { required: 2, recomme
 
 const has = (v: unknown) => typeof v === "string" ? v.trim().length > 0 : v !== undefined && v !== null;
 
-export function fieldItems(d: Draft): CompletenessItem[] {
+export function fieldItems(d: Draft, ctx: FlowContext = { askStation: false }): CompletenessItem[] {
   const f = (key: string, ok: boolean, step: string, level: CompletenessItem["level"] = "required"): CompletenessItem => ({
     key,
     kind: "field",
@@ -42,6 +43,10 @@ export function fieldItems(d: Draft): CompletenessItem[] {
     f("location", has(d.location), "when_where"),
     f("description", has(d.description), "description"),
   ];
+  if (ctx.askStation) {
+    const code = d.vehicle?.stationCode;
+    items.push(f("station", Boolean(code) && code !== STATION_UNKNOWN, "station", "recommended"));
+  }
   if (d.safety?.policeInvolved === "yes") {
     items.push(f("police_reference", has(d.safety?.policeReference), "police_reference", "recommended"));
   }
@@ -94,8 +99,8 @@ export function evidenceItems(d: Draft, uploaded: Iterable<EvidenceSlot>): Compl
 }
 
 /** Completeness score: weighted share of required (x2) and recommended (x1) items present. */
-export function completeness(d: Draft, uploaded: Iterable<EvidenceSlot>): Completeness {
-  const items = [...fieldItems(d), ...evidenceItems(d, uploaded)];
+export function completeness(d: Draft, uploaded: Iterable<EvidenceSlot>, ctx: FlowContext = { askStation: false }): Completeness {
+  const items = [...fieldItems(d, ctx), ...evidenceItems(d, uploaded)];
   const total = items.reduce((s, i) => s + WEIGHT[i.level], 0);
   const got = items.reduce((s, i) => s + (i.ok ? WEIGHT[i.level] : 0), 0);
   const score = total === 0 ? 0 : Math.round((got / total) * 100);

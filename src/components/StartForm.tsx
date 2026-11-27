@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
-type Ctx = { stationName: string; city: string; plate: string | null; rentalAgreement: string | null; emergency: string };
+type Ctx = { stationName: string | null; city: string | null; plate: string | null; rentalAgreement: string | null; emergency: string };
 
 export function StartForm({ entry, context, retentionDays }: { entry: string; context: Ctx; retentionDays: number }) {
   const t = useTranslations();
@@ -43,9 +43,9 @@ export function StartForm({ entry, context, retentionDays }: { entry: string; co
       <p className="alert">{t("start.safety_first", { number: context.emergency })}</p>
       <section className="card" aria-labelledby="known-h">
         <h2 id="known-h">{t("start.known")}</h2>
+        {!context.stationName && !context.plate && !context.rentalAgreement && <p style={{ margin: 0 }}>{t("start.known_none")}</p>}
         <dl className="facts">
-          <dt>{t("start.station")}</dt>
-          <dd>{context.stationName}, {context.city}</dd>
+          {context.stationName && (<><dt>{t("start.station")}</dt><dd>{context.stationName}, {context.city}</dd></>)}
           {context.plate && (<><dt>{t("start.vehicle")}</dt><dd>{context.plate}</dd></>)}
           {context.rentalAgreement && (<><dt>{t("start.agreement")}</dt><dd>{context.rentalAgreement}</dd></>)}
         </dl>
